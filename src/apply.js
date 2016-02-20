@@ -1,7 +1,6 @@
 /* @flow */
-import type { Applicable } from './types'
-
 import React from 'react'
+import type { Applicable } from './types'
 
 type Applier = (BaseComponent: ReactClass) => ReactClass
 
