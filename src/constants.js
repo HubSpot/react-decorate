@@ -1,0 +1,1 @@
+export const IS_COMPOSING = 'IS_COMPOSING'

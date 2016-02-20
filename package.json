@@ -4,16 +4,40 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "check": "flow check",
+    "jest": "jest",
     "lint": "eslint ./src",
-    "test": "npm run lint && npm run check"
+    "test": "npm run lint && npm run jest"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.5.1",
+    "babel-jest": "^6.0.1",
     "babel-plugin-transform-flow-strip-types": "^6.5.0",
     "babel-preset-es2015": "^6.5.0",
-    "flow-bin": "^0.21.0"
+    "babel-preset-react": "^6.5.0",
+    "flow-bin": "^0.21.0",
+    "invariant": "^2.2.0",
+    "jest-cli": "^0.8.2"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "testFileExtensions": [
+      "js"
+    ],
+    "testPathDirs": [
+      "<rootDir>/src"
+    ],
+    "unmockedModulePathPatterns": [
+      "<rootDir>/src/constants.js",
+      "invariant",
+      "react"
+    ]
+  },
+  "dependencies": {
+    "react": "^0.14.7"
   }
 }
