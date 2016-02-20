@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "check": "flow check",
+    "lint": "eslint ./src",
+    "test": "npm run lint && npm run check"
   },
   "author": "",
   "license": "ISC",
