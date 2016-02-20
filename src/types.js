@@ -1,5 +1,4 @@
 /* @flow */
-
 export type Applicable = {
   getInitialState: ?() => any;
   componentWillMount: ?() => any;
