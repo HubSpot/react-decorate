@@ -14,6 +14,6 @@ const MyComponent = ({count, partial, setCount}) => (
 
 export default compose(
   field({value: 'count', handler: 'setCount'}),
-  partial,
+  partial
 )(MyComponent)
 ```
