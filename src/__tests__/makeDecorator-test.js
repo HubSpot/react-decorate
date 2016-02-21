@@ -1,25 +1,19 @@
-jest.dontMock('../makeDecorator')
+import { expect } from 'chai'
+import { IS_COMPOSING } from '../constants'
+import makeDecorator from '../makeDecorator'
 
 describe('makeDecorator', () => {
-  let IS_COMPOSING = require('../constants').IS_COMPOSING
-  let makeDecorator
-
-  beforeEach(() => {
-    makeDecorator = require('../makeDecorator').default
-  })
-
   it('throws for invalid input', () => {
-    expect(() => makeDecorator({})).toThrow()
+    expect(() => makeDecorator({})).to.throw()
   })
 
   it('returns a function', () => {
-    expect(typeof makeDecorator(() => {})).toBe('function')
+    expect(makeDecorator(() => {})).to.be.a('function')
   })
 
   it('return a function that returns a config if composing', () => {
     const config = {}
     const decorator = makeDecorator(() => config)
-    console.log(decorator)
-    expect(decorator()(IS_COMPOSING)).toBe(config)
+    expect(decorator()(IS_COMPOSING)).to.equal(config)
   })
 })
