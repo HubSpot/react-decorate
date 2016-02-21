@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./src",
-    "test": "mocha --compilers js:babel-register 'src/**/*-test.js'"
+    "test": "mocha --compilers js:babel-register 'src/**/*-test.js'",
+    "test-continuously": "mocha -w --compilers js:babel-register 'src/**/*-test.js'"
   },
   "author": "",
   "license": "ISC",
