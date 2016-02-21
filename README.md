@@ -4,7 +4,7 @@ Composable, efficient, stateful decorators for React.
 
 ```javascript
 // MyComponent.js
-import { compose, partial, field } from 'react-decorate'
+import { compose, partial, uncontrolled } from 'react-decorate'
 
 const MyComponent = ({count, partial, setCount}) => (
   <button onClick={partial(setCount, count + 1)}>
