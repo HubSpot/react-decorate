@@ -7,7 +7,7 @@ Composable, efficient, stateful decorators for React.
 import { compose, partial, field } from 'react-decorate'
 
 const MyComponent = ({count, partial, setCount}) => (
-  <button onClick={partial(setCount, count)}>
+  <button onClick={partial(setCount, count + 1)}>
     {count} clicks
   </button>
 )
