@@ -1,6 +1,6 @@
 # react-decorator
 
-Create stateful, composable, efficient decorators for React components.
+Composable, efficient, stateful decorators for React.
 
 ```javascript
 // MyComponent.js

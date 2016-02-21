@@ -1,14 +1,14 @@
 {
   "name": "react-decorator",
   "version": "1.0.0",
-  "description": "",
+  "description": "Composable, efficient, stateful decorators for React.",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./src",
     "test": "mocha --compilers js:babel-register 'src/**/*-test.js'",
     "test-continuously": "mocha -w --compilers js:babel-register 'src/**/*.js'"
   },
-  "author": "",
+  "author": "Colby Rabideau<idontknow5691@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.5.1",
