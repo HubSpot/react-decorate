@@ -17,6 +17,17 @@ describe('decorateWithConfigs', () => {
     expect(decorateWithConfigs([], MockComponent)).to.be.a('function')
   })
 
+  it('generates a proper displayName', () => {
+    const mockFieldName = 'testing'
+    const DecoratedComponent = decorateWithConfigs([{
+      getDisplayName() {
+        return mockFieldName
+      },
+      getValues() {},
+    }], MockComponent)
+    expect(DecoratedComponent.displayName).to.equal('MockComponent<testing>')
+  })
+
   it('renders the base component', () => {
     const DecoratedComponent = decorateWithConfigs([], MockComponent)
     const renderer = createRenderer()
