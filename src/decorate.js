@@ -2,7 +2,7 @@ import invariant from 'invariant'
 import partial from './partial'
 import React from 'react'
 
-export function applyConfigs(configs, BaseComponent) {
+export function decorateWithConfigs(configs, BaseComponent) {
   invariant(
     Array.isArray(configs),
     'expected `configs` to be an array but got `%s`',
@@ -15,6 +15,6 @@ export function applyConfigs(configs, BaseComponent) {
   })
 }
 
-export default function apply(...configs) {
-  return partial(applyConfigs, configs)
+export default function decorate(...configs) {
+  return partial(decorateWithConfigs, configs)
 }

@@ -1,4 +1,4 @@
-import { applyConfigs } from '../apply'
+import { decorateWithConfigs } from '../decorate'
 import { expect } from 'chai'
 import React from 'react'
 import {
@@ -12,13 +12,13 @@ const MockComponent = React.createClass({
   },
 })
 
-describe('applyConfigs', () => {
+describe('decorateWithConfigs', () => {
   it('returns an object', () => {
-    expect(applyConfigs([], MockComponent)).to.be.a('function')
+    expect(decorateWithConfigs([], MockComponent)).to.be.a('function')
   })
 
   it('renders the base component', () => {
-    const DecoratedComponent = applyConfigs([], MockComponent)
+    const DecoratedComponent = decorateWithConfigs([], MockComponent)
     const renderer = createRenderer()
     renderer.render(<DecoratedComponent />)
     const output = renderer.getRenderOutput()

@@ -1,4 +1,4 @@
-import apply from './apply'
+import decorate from './decorate'
 import { IS_COMPOSING } from './constants'
 import invariant from 'invariant'
 
@@ -13,6 +13,6 @@ export default function makeDecorator(constructor) {
     if (BaseComponent === IS_COMPOSING) {
       return config
     }
-    return apply(config)(BaseComponent)
+    return decorate(config)(BaseComponent)
   }
 }
