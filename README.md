@@ -1,4 +1,4 @@
-# react-decorator
+# react-decorate
 
 Composable, efficient, stateful decorators for React.
 

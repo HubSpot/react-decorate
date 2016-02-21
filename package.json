@@ -1,5 +1,5 @@
 {
-  "name": "react-decorator",
+  "name": "react-decorate",
   "version": "1.0.0",
   "description": "Composable, efficient, stateful decorators for React.",
   "main": "index.js",
