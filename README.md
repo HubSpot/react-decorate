@@ -3,7 +3,6 @@
 Composable, efficient, stateful decorators for React.
 
 ```javascript
-// MyComponent.js
 import { compose, partial, uncontrolled } from 'react-decorate'
 
 const MyComponent = ({count, partial, setCount}) => (
