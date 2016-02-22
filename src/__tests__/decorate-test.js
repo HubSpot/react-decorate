@@ -36,15 +36,49 @@ describe('decorateWithConfigs', () => {
     )
   })
 
-  it('resolves the initial state', () => {
-    const initialState = {one: 1, two: 2}
-    const DecoratedComponent = decorateWithConfigs([{
-      getInitialState() {
-        return initialState
-      },
-    }], MockComponent)
+  it('runs the getInitialState cycle', () => {
+    const state = {one: 1, two: 2}
+    const DecoratedComponent = decorateWithConfigs(
+      [{getInitialState: () => state}],
+      MockComponent
+    )
     const output = render(<DecoratedComponent />)
-    expect(output.props).to.deep.equal(initialState)
+    expect(output.props).to.deep.equal(state)
+  })
+
+  it('runs the componentWillMount cycle', () => {
+    const state = {one: 1, two: 2}
+    const DecoratedComponent = decorateWithConfigs(
+      [{componentWillMount: () => state}],
+      MockComponent
+    )
+    const output = render(<DecoratedComponent />)
+    expect(output.props).to.deep.equal(state)
+  })
+
+  it('runs the componentWillReceiveProps cycle', () => {
+    const state = {one: 1, two: 2}
+    const DecoratedComponent = decorateWithConfigs(
+      [{componentWillReceiveProps: () => state}],
+      MockComponent
+    )
+    const renderer = createRenderer()
+    renderer.render(<DecoratedComponent />)
+    renderer.render(<DecoratedComponent />)
+    const output = renderer.getRenderOutput()
+    expect(output.props).to.deep.equal(state)
+  })
+
+  it('runs the componentWillUnmount cycle', () => {
+    let unmounted = false
+    const DecoratedComponent = decorateWithConfigs(
+      [{componentWillUnmount: () => unmounted = true}],
+      MockComponent
+    )
+    const renderer = createRenderer()
+    renderer.render(<DecoratedComponent />)
+    renderer.unmount()
+    expect(unmounted).to.equal(true)
   })
 
   it('passes props', () => {

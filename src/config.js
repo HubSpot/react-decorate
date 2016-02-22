@@ -14,7 +14,6 @@ export function isValidConfig(config) {
     isOptionalFunc(config.getInitialState) &&
     isOptionalFunc(config.getPropTypes) &&
     isOptionalFunc(config.componentWillMount) &&
-    isOptionalFunc(config.componentDidMount) &&
     isOptionalFunc(config.componentWillReceiveProps) &&
     isOptionalFunc(config.handleChange) &&
     isOptionalFunc(config.componentWillUnmount)

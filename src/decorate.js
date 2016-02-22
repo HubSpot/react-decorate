@@ -41,6 +41,22 @@ export function makeDecoratorComponent(configs, BaseComponent) {
       return run('getInitialState', this.props, BaseComponent)
     },
 
+    componentWillMount() {
+      this.setState(
+        run('componentWillMount', this.props, BaseComponent)
+      )
+    },
+
+    componentWillReceiveProps(nextProps) {
+      this.setState(
+        run('componentWillReceiveProps', nextProps, BaseComponent)
+      )
+    },
+
+    componentWillUnmount() {
+      run('componentWillUnmount', this.props, BaseComponent)
+    },
+
     render() {
       return (
         <BaseComponent
