@@ -31,16 +31,14 @@ export function makeDisplayName(configs, BaseComponent) {
 }
 
 export function makeDecoratorComponent(configs, BaseComponent) {
+  const run = partial(runCycle, configs)
   return React.createClass({
     displayName: makeDisplayName(configs, BaseComponent),
 
+    propTypes: run('getPropTypes', BaseComponent),
+
     getInitialState() {
-      return runCycle(
-        configs,
-        'getInitialState',
-        this.props,
-        BaseComponent
-      )
+      return run('getInitialState', this.props, BaseComponent)
     },
 
     render() {

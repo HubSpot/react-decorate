@@ -44,11 +44,14 @@ describe('decorateWithConfigs', () => {
       },
     }], MockComponent)
     const output = render(<DecoratedComponent />)
-    expect(
-      output.props
-    ).to.deep.equal(
-      initialState
-    )
+    expect(output.props).to.deep.equal(initialState)
+  })
+
+  it('passes props', () => {
+    const DecoratedComponent = decorateWithConfigs([], MockComponent)
+    const testProps = {one: 1, two: 2}
+    const output = render(<DecoratedComponent {...testProps} />)
+    expect(output.props).to.deep.equal(testProps)
   })
 
   it('renders the base component', () => {
