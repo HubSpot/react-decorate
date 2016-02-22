@@ -1,6 +1,6 @@
 # react-decorate
 
-Composable, efficient, stateful decorators for React.
+Build composable, stateful decorators for React.
 
 ```javascript
 import { compose, partial, uncontrolled } from 'react-decorate'

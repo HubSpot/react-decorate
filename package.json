@@ -1,7 +1,7 @@
 {
   "name": "react-decorate",
   "version": "1.0.0",
-  "description": "Composable, efficient, stateful decorators for React.",
+  "description": "Build composable, stateful decorators for React.",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./src",
