@@ -13,9 +13,6 @@ const MyComponent = ({count, partial, setCount}) => (
 
 export default compose(
   partial(),
-  uncontrolled({
-    prop: 'count',
-    handlerProp: 'setCount',
-  })
+  uncontrolled('count', 'setCount')
 )(MyComponent)
 ```
