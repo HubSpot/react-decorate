@@ -3,6 +3,23 @@ import invariant from 'invariant'
 import partial from './partial'
 import React from 'react'
 
+function extend(target, object) {
+  for (let key in object) {
+    target[key] = object[key]
+  }
+  return target
+}
+
+function runCycle(configs, cycleName, ...args) {
+  return configs.reduce((state, config) => {
+    const cycle = config[cycleName]
+    if (typeof cycle !== 'function') {
+      return state
+    }
+    return extend(state, cycle(...args))
+  }, {})
+}
+
 export function makeDisplayName(configs, BaseComponent) {
   const names = configs.reduce((ns, {getDisplayName}) => {
     if (getDisplayName) {
@@ -10,15 +27,29 @@ export function makeDisplayName(configs, BaseComponent) {
     }
     return ns
   }, [])
-  return `${BaseComponent.displayName}<${names.join(',')}>`
+  return `${BaseComponent.displayName}<${names.join(', ')}>`
 }
 
 export function makeDecoratorComponent(configs, BaseComponent) {
   return React.createClass({
     displayName: makeDisplayName(configs, BaseComponent),
 
+    getInitialState() {
+      return runCycle(
+        configs,
+        'getInitialState',
+        this.props,
+        BaseComponent
+      )
+    },
+
     render() {
-      return <BaseComponent />
+      return (
+        <BaseComponent
+          {...this.props}
+          {...this.state}
+        />
+      )
     },
   })
 }

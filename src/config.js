@@ -10,8 +10,8 @@ function isOptionalFunc(fn) {
 
 export function isValidConfig(config) {
   return (
-    isFunc(config.getDisplayName) &&
-    isFunc(config.getValues) &&
+    isOptionalFunc(config.getDisplayName) &&
+    isOptionalFunc(config.getInitialState) &&
     isOptionalFunc(config.getPropTypes) &&
     isOptionalFunc(config.componentWillMount) &&
     isOptionalFunc(config.componentDidMount) &&

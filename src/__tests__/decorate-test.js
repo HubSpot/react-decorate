@@ -6,6 +6,12 @@ import {
   isElementOfType,
 } from 'react-addons-test-utils'
 
+function render(element) {
+  const renderer = createRenderer()
+  renderer.render(element)
+  return renderer.getRenderOutput()
+}
+
 const MockComponent = React.createClass({
   render() {
     return <div />
@@ -18,21 +24,36 @@ describe('decorateWithConfigs', () => {
   })
 
   it('generates a proper displayName', () => {
-    const mockFieldName = 'testing'
     const DecoratedComponent = decorateWithConfigs([{
-      getDisplayName() {
-        return mockFieldName
-      },
-      getValues() {},
+      getDisplayName: () => 'testing',
+    }, {
+      getDisplayName: () => 'other',
     }], MockComponent)
-    expect(DecoratedComponent.displayName).to.equal('MockComponent<testing>')
+    expect(
+      DecoratedComponent.displayName
+    ).to.equal(
+      'MockComponent<testing, other>'
+    )
+  })
+
+  it('resolves the initial state', () => {
+    const initialState = {one: 1, two: 2}
+    const DecoratedComponent = decorateWithConfigs([{
+      getInitialState() {
+        return initialState
+      },
+    }], MockComponent)
+    const output = render(<DecoratedComponent />)
+    expect(
+      output.props
+    ).to.deep.equal(
+      initialState
+    )
   })
 
   it('renders the base component', () => {
     const DecoratedComponent = decorateWithConfigs([], MockComponent)
-    const renderer = createRenderer()
-    renderer.render(<DecoratedComponent />)
-    const output = renderer.getRenderOutput()
+    const output = render(<DecoratedComponent />)
     expect(isElementOfType(output, MockComponent)).to.equal(true)
   })
 })
