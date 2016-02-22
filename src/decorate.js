@@ -3,27 +3,21 @@ import invariant from 'invariant'
 import partial from './partial'
 import React from 'react'
 
-function extend(target, object) {
-  for (let key in object) {
-    target[key] = object[key]
-  }
-  return target
-}
-
 function runCycle(configs, cycleName, ...args) {
   return configs.reduce((state, config) => {
     const cycle = config[cycleName]
     if (typeof cycle !== 'function') {
       return state
     }
-    return extend(state, cycle(...args))
+    state[config.getPropName()] = cycle(...args)
+    return state
   }, {})
 }
 
 export function makeDisplayName(configs, BaseComponent) {
-  const names = configs.reduce((ns, {getDisplayName}) => {
-    if (getDisplayName) {
-      ns.push(getDisplayName(BaseComponent))
+  const names = configs.reduce((ns, {getPropName}) => {
+    if (getPropName) {
+      ns.push(getPropName(BaseComponent))
     }
     return ns
   }, [])

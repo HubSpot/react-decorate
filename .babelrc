@@ -2,6 +2,7 @@
   "plugins": ["transform-flow-strip-types"],
   "presets": [
     "es2015",
-    "react"
+    "react",
+    "stage-2"
   ]
 }

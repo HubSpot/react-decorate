@@ -18,28 +18,39 @@ const MockComponent = React.createClass({
   },
 })
 
+const MockDecorator = {
+  getPropName: () => 'one',
+  componentWillMount: () => 1,
+  componentWillReceiveProps: () => 2,
+}
+
+const OtherDecorator = {
+  getPropName: () => 'two',
+  getInitialState: () => 2,
+  componentWillReceiveProps: () => 3,
+}
+
 describe('decorateWithConfigs', () => {
   it('returns an object', () => {
     expect(decorateWithConfigs([], MockComponent)).to.be.a('function')
   })
 
-  it('generates a proper displayName', () => {
-    const DecoratedComponent = decorateWithConfigs([{
-      getDisplayName: () => 'testing',
-    }, {
-      getDisplayName: () => 'other',
-    }], MockComponent)
+  it('generates a proper propName', () => {
+    const DecoratedComponent = decorateWithConfigs([
+      MockDecorator,
+      OtherDecorator,
+    ], MockComponent)
     expect(
       DecoratedComponent.displayName
     ).to.equal(
-      'MockComponent<testing, other>'
+      'MockComponent<one, two>'
     )
   })
 
   it('runs the getInitialState cycle', () => {
-    const state = {one: 1, two: 2}
+    const state = {two: 2}
     const DecoratedComponent = decorateWithConfigs(
-      [{getInitialState: () => state}],
+      [OtherDecorator],
       MockComponent
     )
     const output = render(<DecoratedComponent />)
@@ -47,19 +58,19 @@ describe('decorateWithConfigs', () => {
   })
 
   it('runs the componentWillMount cycle', () => {
-    const state = {one: 1, two: 2}
+    const state = {one: 1}
     const DecoratedComponent = decorateWithConfigs(
-      [{componentWillMount: () => state}],
-      MockComponent
+      [MockDecorator],
+      MockComponent,
     )
     const output = render(<DecoratedComponent />)
     expect(output.props).to.deep.equal(state)
   })
 
   it('runs the componentWillReceiveProps cycle', () => {
-    const state = {one: 1, two: 2}
+    const state = {one: 2, two: 3}
     const DecoratedComponent = decorateWithConfigs(
-      [{componentWillReceiveProps: () => state}],
+      [MockDecorator, OtherDecorator],
       MockComponent
     )
     const renderer = createRenderer()
@@ -71,10 +82,10 @@ describe('decorateWithConfigs', () => {
 
   it('runs the componentWillUnmount cycle', () => {
     let unmounted = false
-    const DecoratedComponent = decorateWithConfigs(
-      [{componentWillUnmount: () => unmounted = true}],
-      MockComponent
-    )
+    const DecoratedComponent = decorateWithConfigs([{
+      ...MockDecorator,
+      componentWillUnmount: () => unmounted = true,
+    }], MockComponent)
     const renderer = createRenderer()
     renderer.render(<DecoratedComponent />)
     renderer.unmount()

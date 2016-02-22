@@ -6,15 +6,16 @@ import { createRenderer } from 'react-addons-test-utils'
 describe('example: UniqueIds', () => {
   let nextId = 1
   const uniqueId = makeDecorator(({prop}) => ({
+    getPropName() {
+      return prop || 'uniqueId'
+    },
     getInitialState() {
       let cache = {}
-      return {
-        [prop || 'uniqueId']: (key) => {
-          if (!cache.hasOwnProperty(key)) {
-            cache[key] = `${key}-${nextId++}`
-          }
-          return cache[key]
-        },
+      return (key) => {
+        if (!cache.hasOwnProperty(key)) {
+          cache[key] = `${key}-${nextId++}`
+        }
+        return cache[key]
       }
     },
   }))
