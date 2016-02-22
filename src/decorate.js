@@ -28,7 +28,16 @@ export function makeDecoratorComponent(configs, BaseComponent) {
   return React.createClass({
     displayName: makeDisplayName(configs, BaseComponent),
 
-    propTypes: run('getPropTypes', BaseComponent),
+    propTypes: configs.reduce((types, config) => {
+      const {getPropTypes} = config
+      if (typeof getPropTypes !== 'function') {
+        return types
+      }
+      return {
+        ...types,
+        ...getPropTypes(BaseComponent),
+      }
+    }, {}),
 
     getInitialState() {
       return {

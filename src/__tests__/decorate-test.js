@@ -21,6 +21,7 @@ const MockComponent = React.createClass({
 const MockDecorator = {
   getHandlerName: () => 'setOne',
   getPropName: () => 'one',
+  getPropTypes: () => ({type: function() {}}),
   handleChange: (value) => value,
   componentWillMount: () => 1,
   componentWillReceiveProps: () => 2,
@@ -63,6 +64,14 @@ describe('decorateWithConfigs', () => {
     expect(output.props.one).to.equal(1)
     output.props.setOne(2)
     expect(lastChange).to.equal(2)
+  })
+
+  it('generates propTypes', () => {
+    const DecoratedComponent = decorateWithConfigs(
+      [MockDecorator],
+      MockComponent
+    )
+    expect(DecoratedComponent.propTypes.type).to.be.a('function')
   })
 
   it('runs the getInitialState cycle', () => {
