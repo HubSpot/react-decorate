@@ -6,10 +6,9 @@ import React from 'react'
 function runCycle(configs, cycleName, ...args) {
   return configs.reduce((state, config) => {
     const cycle = config[cycleName]
-    if (typeof cycle !== 'function') {
-      return state
+    if (typeof cycle === 'function') {
+      state[config.getPropName()] = cycle(...args)
     }
-    state[config.getPropName()] = cycle(...args)
     return state
   }, {})
 }
@@ -32,7 +31,32 @@ export function makeDecoratorComponent(configs, BaseComponent) {
     propTypes: run('getPropTypes', BaseComponent),
 
     getInitialState() {
-      return run('getInitialState', this.props, BaseComponent)
+      return {
+        ...run('getInitialState', this.props, BaseComponent),
+        ...this.getHandlers(),
+      }
+    },
+
+    getHandlers() {
+      return configs.reduce((handlers, config) => {
+        const {getHandlerName} = config
+        if (typeof getHandlerName === 'function') {
+          handlers[getHandlerName(BaseComponent)] = partial(
+            this.handleChange,
+            config
+          )
+        }
+        return handlers
+      }, {})
+    },
+
+    handleChange(config, ...args) {
+      const {handleChange} = config
+      this.setState({
+        [config.getPropName]: typeof handleChange === 'function' ?
+          handleChange(...args) :
+          args[0],
+      })
     },
 
     componentWillMount() {

@@ -19,7 +19,9 @@ const MockComponent = React.createClass({
 })
 
 const MockDecorator = {
+  getHandlerName: () => 'setOne',
   getPropName: () => 'one',
+  handleChange: (value) => value,
   componentWillMount: () => 1,
   componentWillReceiveProps: () => 2,
 }
@@ -47,6 +49,15 @@ describe('decorateWithConfigs', () => {
     )
   })
 
+  it('generates change handlers', () => {
+    const DecoratedComponent = decorateWithConfigs(
+      [MockDecorator],
+      MockComponent
+    )
+    const output = render(<DecoratedComponent />)
+    expect(output.props.setOne).to.be.a('function')
+  })
+
   it('runs the getInitialState cycle', () => {
     const state = {two: 2}
     const DecoratedComponent = decorateWithConfigs(
@@ -58,17 +69,15 @@ describe('decorateWithConfigs', () => {
   })
 
   it('runs the componentWillMount cycle', () => {
-    const state = {one: 1}
     const DecoratedComponent = decorateWithConfigs(
       [MockDecorator],
       MockComponent,
     )
     const output = render(<DecoratedComponent />)
-    expect(output.props).to.deep.equal(state)
+    expect(output.props.one).to.deep.equal(1)
   })
 
   it('runs the componentWillReceiveProps cycle', () => {
-    const state = {one: 2, two: 3}
     const DecoratedComponent = decorateWithConfigs(
       [MockDecorator, OtherDecorator],
       MockComponent
@@ -77,7 +86,8 @@ describe('decorateWithConfigs', () => {
     renderer.render(<DecoratedComponent />)
     renderer.render(<DecoratedComponent />)
     const output = renderer.getRenderOutput()
-    expect(output.props).to.deep.equal(state)
+    expect(output.props.one).to.deep.equal(2)
+    expect(output.props.two).to.deep.equal(3)
   })
 
   it('runs the componentWillUnmount cycle', () => {

@@ -11,11 +11,12 @@ function isOptionalFunc(fn) {
 export function isValidConfig(config) {
   return (
     isFunc(config.getPropName) &&
+    (!config.handleChange || isFunc(config.getHandlerName)) &&
     isOptionalFunc(config.getInitialState) &&
     isOptionalFunc(config.getPropTypes) &&
+    isOptionalFunc(config.handleChange) &&
     isOptionalFunc(config.componentWillMount) &&
     isOptionalFunc(config.componentWillReceiveProps) &&
-    isOptionalFunc(config.handleChange) &&
     isOptionalFunc(config.componentWillUnmount)
   )
 }
