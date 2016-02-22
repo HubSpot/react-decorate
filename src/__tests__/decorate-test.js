@@ -13,6 +13,16 @@ function render(element) {
 }
 
 const MockComponent = React.createClass({
+  propTypes: {
+    unrelated: function() {},
+  },
+
+  getDefaultProps() {
+    return {
+      unrelated: 'unrelated',
+    }
+  },
+
   render() {
     return <div />
   },
@@ -20,6 +30,7 @@ const MockComponent = React.createClass({
 
 const MockDecorator = {
   getHandlerName: () => 'setOne',
+  getDefaultProps: () => ({type: 'test'}),
   getPropName: () => 'one',
   getPropTypes: () => ({type: function() {}}),
   handleChange: (value) => value,
@@ -50,6 +61,16 @@ describe('decorateWithConfigs', () => {
     )
   })
 
+  it('generates default props', () => {
+    const DecoratedComponent = decorateWithConfigs(
+      [MockDecorator],
+      MockComponent
+    )
+    const output = render(<DecoratedComponent />)
+    expect(output.props.type).to.equal('test')
+    expect(output.props.unrelated).to.equal('unrelated')
+  })
+
   it('generates change handlers', () => {
     let lastChange
     const DecoratedComponent = decorateWithConfigs([{
@@ -72,16 +93,16 @@ describe('decorateWithConfigs', () => {
       MockComponent
     )
     expect(DecoratedComponent.propTypes.type).to.be.a('function')
+    expect(DecoratedComponent.propTypes.unrelated).to.be.a('function')
   })
 
   it('runs the getInitialState cycle', () => {
-    const state = {two: 2}
     const DecoratedComponent = decorateWithConfigs(
       [OtherDecorator],
       MockComponent
     )
     const output = render(<DecoratedComponent />)
-    expect(output.props).to.deep.equal(state)
+    expect(output.props.two).to.deep.equal(2)
   })
 
   it('runs the componentWillMount cycle', () => {
@@ -120,9 +141,14 @@ describe('decorateWithConfigs', () => {
 
   it('passes props', () => {
     const DecoratedComponent = decorateWithConfigs([], MockComponent)
-    const testProps = {one: 1, two: 2}
-    const output = render(<DecoratedComponent {...testProps} />)
-    expect(output.props).to.deep.equal(testProps)
+    const output = render(
+      <DecoratedComponent
+        one={1}
+        two={2}
+      />
+    )
+    expect(output.props.one).to.deep.equal(1)
+    expect(output.props.two).to.deep.equal(2)
   })
 
   it('renders the base component', () => {

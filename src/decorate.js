@@ -3,6 +3,23 @@ import invariant from 'invariant'
 import partial from './partial'
 import React from 'react'
 
+function extend(base, merge) {
+  for (let key in merge) {
+    base[key] = merge[key]
+  }
+  return base
+}
+
+function runMulti(configs, cycleName, ...args) {
+  return configs.reduce((state, config) => {
+    const cycle = config[cycleName]
+    if (typeof cycle === 'function') {
+      extend(state, cycle(...args))
+    }
+    return state
+  }, {})
+}
+
 function runCycle(configs, cycleName, ...args) {
   return configs.reduce((state, config) => {
     const cycle = config[cycleName]
@@ -28,16 +45,19 @@ export function makeDecoratorComponent(configs, BaseComponent) {
   return React.createClass({
     displayName: makeDisplayName(configs, BaseComponent),
 
-    propTypes: configs.reduce((types, config) => {
-      const {getPropTypes} = config
-      if (typeof getPropTypes !== 'function') {
-        return types
-      }
+    propTypes: {
+      ...BaseComponent.propTypes,
+      ...runMulti(configs, 'getPropTypes', BaseComponent),
+    },
+
+    getDefaultProps() {
+      const {getDefaultProps} = BaseComponent
+      const baseDefaultProps = getDefaultProps ? getDefaultProps() : {}
       return {
-        ...types,
-        ...getPropTypes(BaseComponent),
+        ...baseDefaultProps,
+        ...runMulti(configs, 'getDefaultProps', BaseComponent),
       }
-    }, {}),
+    },
 
     getInitialState() {
       return {
