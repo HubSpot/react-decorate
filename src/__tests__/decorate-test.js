@@ -50,12 +50,19 @@ describe('decorateWithConfigs', () => {
   })
 
   it('generates change handlers', () => {
-    const DecoratedComponent = decorateWithConfigs(
-      [MockDecorator],
-      MockComponent
-    )
+    let lastChange
+    const DecoratedComponent = decorateWithConfigs([{
+      ...MockDecorator,
+      handleChange(value) {
+        lastChange = value
+        return value
+      },
+    }], MockComponent)
     const output = render(<DecoratedComponent />)
     expect(output.props.setOne).to.be.a('function')
+    expect(output.props.one).to.equal(1)
+    output.props.setOne(2)
+    expect(lastChange).to.equal(2)
   })
 
   it('runs the getInitialState cycle', () => {
