@@ -14,7 +14,7 @@
     "test-watch": "mocha -w --compilers js:babel-register 'src/**/*.js'"
   },
   "author": "Colby Rabideau<idontknow5691@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-loader": "^6.2.3",
