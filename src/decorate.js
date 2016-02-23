@@ -11,23 +11,23 @@ function extend(base, merge) {
 }
 
 function runMulti(configs, cycleName, ...args) {
-  return configs.reduce((state, config) => {
+  return configs.reduce((result, config) => {
     const cycle = config[cycleName]
     if (typeof cycle === 'function') {
-      extend(state, cycle(...args))
+      extend(result, cycle(...args))
     }
-    return state
+    return result
   }, {})
 }
 
 function runCycle(configs, cycleName, props, state, BaseComponent) {
-  return configs.reduce((state, config) => {
+  return configs.reduce((result, config) => {
     const cycle = config[cycleName]
     if (typeof cycle === 'function') {
       const name = config.getPropName()
-      state[name] = cycle(props, state[name], BaseComponent)
+      result[name] = cycle(props, state[name], BaseComponent)
     }
-    return state
+    return result
   }, {})
 }
 
