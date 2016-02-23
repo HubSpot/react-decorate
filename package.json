@@ -11,7 +11,7 @@
     "lint": "eslint ./src",
     "prepublish": "npm lint && npm test && npm build",
     "test": "mocha --compilers js:babel-register 'src/**/*-test.js'",
-    "test-continuously": "mocha -w --compilers js:babel-register 'src/**/*.js'"
+    "test-watch": "mocha -w --compilers js:babel-register 'src/**/*.js'"
   },
   "author": "Colby Rabideau<idontknow5691@gmail.com>",
   "license": "ISC",
