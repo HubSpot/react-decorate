@@ -3,6 +3,14 @@
   "version": "2.0.2",
   "description": "Build composable, stateful decorators for React.",
   "main": "index.js",
+  "bugs": {
+    "url": "https://github.com/HubSpot/react-decorate/issues"
+  },
+  "homepage": "https://github.com/HubSpot/react-decorate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HubSpot/react-decorate"
+  },
   "scripts": {
     "build:commonjs": "BABEL_ENV=commonjs babel src --ignore *-test.js --out-dir lib",
     "build:umd": "NODE_ENV=development webpack src/index.js dist/ReactDecorator.js",
