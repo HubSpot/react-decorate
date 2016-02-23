@@ -31,8 +31,8 @@ function runCycle(configs, cycleName, props, state, BaseComponent) {
   }, {})
 }
 
-function filterPropTypes(configs, BaseComponent) {
-  let filtered = {...BaseComponent.propTypes}
+function filterDefined(configs, BaseComponent, unfiltered) {
+  let filtered = {...unfiltered}
   configs.forEach(({getHandlerName, getPropName}) => {
     if (getHandlerName) {
       delete filtered[getHandlerName(BaseComponent)]
@@ -62,7 +62,7 @@ export function makeDecoratorComponent(configs, BaseComponent) {
     displayName: makeDisplayName(configs, BaseComponent),
 
     propTypes: {
-      ...filterPropTypes(configs, BaseComponent),
+      ...filterDefined(configs, BaseComponent, BaseComponent.propTypes),
       ...runMulti(configs, 'getPropTypes', BaseComponent),
     },
 
@@ -70,7 +70,7 @@ export function makeDecoratorComponent(configs, BaseComponent) {
       const {getDefaultProps} = BaseComponent
       const baseDefaultProps = getDefaultProps ? getDefaultProps() : {}
       return {
-        ...baseDefaultProps,
+        ...filterDefined(configs, BaseComponent, baseDefaultProps),
         ...runMulti(
           configs,
           'getDefaultProps',
