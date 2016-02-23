@@ -30,6 +30,19 @@ function runCycle(configs, cycleName, ...args) {
   }, {})
 }
 
+function filterPropTypes(configs, BaseComponent) {
+  let filtered = {...BaseComponent.propTypes}
+  configs.forEach(({getHandlerName, getPropName}) => {
+    if (getHandlerName) {
+      delete filtered[getHandlerName(BaseComponent)]
+    }
+    if (getPropName) {
+      delete filtered[getPropName(BaseComponent)]
+    }
+  })
+  return filtered
+}
+
 export function makeDisplayName(configs, BaseComponent) {
   const names = configs.reduce((ns, {getPropName}) => {
     if (getPropName) {
@@ -46,7 +59,7 @@ export function makeDecoratorComponent(configs, BaseComponent) {
     displayName: makeDisplayName(configs, BaseComponent),
 
     propTypes: {
-      ...BaseComponent.propTypes,
+      ...filterPropTypes(configs, BaseComponent),
       ...runMulti(configs, 'getPropTypes', BaseComponent),
     },
 

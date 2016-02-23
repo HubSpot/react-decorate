@@ -14,6 +14,7 @@ function render(element) {
 
 const MockComponent = React.createClass({
   propTypes: {
+    one: function() {},
     unrelated: function() {},
   },
 
@@ -47,6 +48,14 @@ const OtherDecorator = {
 describe('decorateWithConfigs', () => {
   it('returns an object', () => {
     expect(decorateWithConfigs([], MockComponent)).to.be.a('function')
+  })
+
+  it('filters decorator propTypes', () => {
+    const DecoratedComponent = decorateWithConfigs(
+      [MockDecorator],
+      MockComponent
+    )
+    expect(DecoratedComponent.propTypes.one).to.equal(undefined)
   })
 
   it('generates a proper propName', () => {
