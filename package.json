@@ -4,7 +4,12 @@
   "description": "Build composable, stateful decorators for React.",
   "main": "index.js",
   "scripts": {
+    "build:commonjs": "BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:umd": "NODE_ENV=development webpack src/index.js dist/ReactDecorator.js",
+    "build:umd:min": "NODE_ENV=production webpack src/index.js dist/ReactDecorator.min.js",
+    "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min",
     "lint": "eslint ./src",
+    "prepublish": "npm lint && npm test && npm build",
     "test": "mocha --compilers js:babel-register 'src/**/*-test.js'",
     "test-continuously": "mocha -w --compilers js:babel-register 'src/**/*.js'"
   },
@@ -12,6 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.5.1",
+    "babel-loader": "^6.2.3",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
@@ -19,7 +25,8 @@
     "chai": "^3.5.0",
     "invariant": "^2.2.0",
     "mocha": "^2.4.5",
-    "react-addons-test-utils": "^0.14.7"
+    "react-addons-test-utils": "^0.14.7",
+    "webpack": "^1.12.14"
   },
   "dependencies": {
     "react": "^0.14.7"
