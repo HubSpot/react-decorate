@@ -5,6 +5,14 @@ var webpack = require('webpack')
 
 var isProd = process.env.NODE_ENV === 'production'
 var config = {
+  externals: {
+    'react': {
+      amd: 'react',
+      commonjs2: 'react',
+      commonjs: 'react',
+      root: 'React',
+    },
+  },
   module: {
     loaders: [{
       test: /\.js$/,

@@ -1,6 +1,6 @@
 {
   "name": "react-decorate",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Build composable, stateful decorators for React.",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,9 @@
   },
   "author": "Colby Rabideau<idontknow5691@gmail.com>",
   "license": "MIT",
+  "peerDependencies": {
+    "react": "^0.14.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-loader": "^6.2.3",
@@ -25,10 +28,8 @@
     "chai": "^3.5.0",
     "invariant": "^2.2.0",
     "mocha": "^2.4.5",
+    "react": "^0.14.0",
     "react-addons-test-utils": "^0.14.7",
     "webpack": "^1.12.14"
-  },
-  "dependencies": {
-    "react": "^0.14.7"
   }
 }
