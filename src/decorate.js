@@ -97,7 +97,7 @@ export function makeDecoratorComponent(configs, BaseComponent) {
       const {handleChange} = config
       this.setState({
         [config.getPropName]: typeof handleChange === 'function' ?
-          handleChange(...args) :
+          handleChange(this.props, ...args) :
           args[0],
       })
     },
