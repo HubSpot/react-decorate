@@ -13,7 +13,7 @@
     "test": "mocha --compilers js:babel-register 'src/**/*-test.js'",
     "test-watch": "mocha -w --compilers js:babel-register 'src/**/*.js'"
   },
-  "author": "Colby Rabideau<idontknow5691@gmail.com>",
+  "author": "Colby Rabideau<crabideau@hubspot.com>",
   "license": "MIT",
   "peerDependencies": {
     "react": "^0.14.0"
