@@ -1,6 +1,6 @@
 {
   "name": "react-decorate",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Build composable, stateful decorators for React.",
   "main": "index.js",
   "scripts": {
