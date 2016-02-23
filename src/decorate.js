@@ -69,7 +69,12 @@ export function makeDecoratorComponent(configs, BaseComponent) {
       const baseDefaultProps = getDefaultProps ? getDefaultProps() : {}
       return {
         ...baseDefaultProps,
-        ...runMulti(configs, 'getDefaultProps', BaseComponent),
+        ...runMulti(
+          configs,
+          'getDefaultProps',
+          BaseComponent.getDefaultProps(),
+          BaseComponent
+        ),
       }
     },
 
