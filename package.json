@@ -4,7 +4,7 @@
   "description": "Build composable, stateful decorators for React.",
   "main": "index.js",
   "scripts": {
-    "build:commonjs": "BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:commonjs": "BABEL_ENV=commonjs babel src --ignore *-test.js --out-dir lib",
     "build:umd": "NODE_ENV=development webpack src/index.js dist/ReactDecorator.js",
     "build:umd:min": "NODE_ENV=production webpack src/index.js dist/ReactDecorator.min.js",
     "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min",
