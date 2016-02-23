@@ -20,12 +20,12 @@ function runMulti(configs, cycleName, ...args) {
   }, {})
 }
 
-function runCycle(configs, cycleName, state, ...args) {
+function runCycle(configs, cycleName, props, state, BaseComponent) {
   return configs.reduce((state, config) => {
     const cycle = config[cycleName]
     if (typeof cycle === 'function') {
       const name = config.getPropName()
-      state[name] = cycle(state[name], ...args)
+      state[name] = cycle(props, state[name], BaseComponent)
     }
     return state
   }, {})
@@ -75,7 +75,7 @@ export function makeDecoratorComponent(configs, BaseComponent) {
 
     getInitialState() {
       return {
-        ...run('getInitialState', {}, this.props, BaseComponent),
+        ...run('getInitialState', this.props, {}, BaseComponent),
         ...this.getHandlers(),
       }
     },
@@ -104,18 +104,18 @@ export function makeDecoratorComponent(configs, BaseComponent) {
 
     componentWillMount() {
       this.setState(
-        run('componentWillMount', this.state, this.props, BaseComponent)
+        run('componentWillMount', this.props, this.state, BaseComponent)
       )
     },
 
     componentWillReceiveProps(nextProps) {
       this.setState(
-        run('componentWillReceiveProps', this.state, nextProps, BaseComponent)
+        run('componentWillReceiveProps', nextProps, this.state, BaseComponent)
       )
     },
 
     componentWillUnmount() {
-      run('componentWillUnmount', this.state, this.props, BaseComponent)
+      run('componentWillUnmount', this.props, this.state, BaseComponent)
     },
 
     render() {
