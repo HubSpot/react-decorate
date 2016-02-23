@@ -9,7 +9,7 @@
     "build:umd:min": "NODE_ENV=production webpack src/index.js dist/ReactDecorator.min.js",
     "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min",
     "lint": "eslint ./src",
-    "prepublish": "npm lint && npm test && npm build",
+    "prepublish": "npm run lint && npm test && npm run build",
     "test": "mocha --compilers js:babel-register 'src/**/*-test.js'",
     "test-watch": "mocha -w --compilers js:babel-register 'src/**/*.js'"
   },
