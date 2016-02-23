@@ -2,7 +2,7 @@ import composeDecorators from './compose'
 import decorate from './decorate'
 import makeDecorator from './makeDecorator'
 
-export default {
+module.exports = {
   composeDecorators,
   decorate,
   makeDecorator,
