@@ -53,7 +53,7 @@ export function makeDisplayName(configs, BaseComponent) {
     }
     return ns
   }, [])
-  return `Decorated(${names.join(', ')})(${BaseComponent.displayName})`
+  return `${BaseComponent.displayName}+[${names.join(',')}]`
 }
 
 export function makeDecoratorComponent(configs, BaseComponent) {
@@ -74,7 +74,7 @@ export function makeDecoratorComponent(configs, BaseComponent) {
         ...runMulti(
           configs,
           'getDefaultProps',
-          BaseComponent.getDefaultProps(),
+          baseDefaultProps,
           BaseComponent
         ),
       }

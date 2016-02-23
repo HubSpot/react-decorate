@@ -66,7 +66,7 @@ describe('decorateWithConfigs', () => {
     expect(
       DecoratedComponent.displayName
     ).to.equal(
-      'MockComponent<one, two>'
+      'MockComponent+[one,two]'
     )
   })
 
@@ -84,7 +84,7 @@ describe('decorateWithConfigs', () => {
     let lastChange
     const DecoratedComponent = decorateWithConfigs([{
       ...MockDecorator,
-      handleChange(value) {
+      handleChange(props, value) {
         lastChange = value
         return value
       },
