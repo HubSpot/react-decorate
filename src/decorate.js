@@ -45,13 +45,15 @@ function filterPropTypes(configs, BaseComponent) {
 }
 
 export function makeDisplayName(configs, BaseComponent) {
-  const names = configs.reduce((ns, {getPropName}) => {
-    if (getPropName) {
+  const names = configs.reduce((ns, {getDisplayName, getPropName}) => {
+    if (getDisplayName) {
+      ns.push(getDisplayName(BaseComponent))
+    } else {
       ns.push(getPropName(BaseComponent))
     }
     return ns
   }, [])
-  return `${BaseComponent.displayName}<${names.join(', ')}>`
+  return `Decorated(${names.join(', ')})(${BaseComponent.displayName})`
 }
 
 export function makeDecoratorComponent(configs, BaseComponent) {

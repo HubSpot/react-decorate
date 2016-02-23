@@ -12,6 +12,7 @@ export function isValidConfig(config) {
   return (
     isFunc(config.getPropName) &&
     (!config.handleChange || isFunc(config.getHandlerName)) &&
+    isOptionalFunc(config.getDisplayName) &&
     isOptionalFunc(config.getInitialState) &&
     isOptionalFunc(config.getPropTypes) &&
     isOptionalFunc(config.handleChange) &&
