@@ -1,4 +1,4 @@
- react-decorate
+# react-decorate
 
 `react-decorate` aims to help you build composable, stateful decorators for React components.
 
