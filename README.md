@@ -76,7 +76,7 @@ Since the value of `persistentUniqueId` won't change over time we can defined it
 // ...
 ```
 
-And that's it. Now we can use our `persistenUniqueId` decorator to inject a stateful `uniqueId` function into a stateless component.
+And that's it. Now we can use our `persistentUniqueId` decorator to inject a stateful `uniqueId` function into a stateless component.
 
 ```javascript
 import persistentUniqueId from './persistentUniqueId'
