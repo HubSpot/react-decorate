@@ -46,7 +46,7 @@ export function makeDecoratorComponent(configs, BaseComponent) {
       )
     },
 
-    handleNext(config) {
+    handleNext() {
       this.forceUpdate()
     },
 

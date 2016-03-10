@@ -29,6 +29,7 @@ const MockComponent = React.createClass({
   },
 })
 
+let mockState = 1
 const MockDecorator = {
   displayName: () => 'mock',
   propTypes: ({one, ...others}) => ({
@@ -41,10 +42,13 @@ const MockDecorator = {
       type: 'test',
     }
   },
-  step: (props) => ({
+  step: (props, onNext) => ({
     ...props,
-    one: 1,
-    setOne: (val) => val,
+    one: mockState,
+    setOne: (next) => {
+      mockState = next
+      onNext()
+    },
   }),
 }
 
@@ -97,7 +101,10 @@ describe('decorateWithConfigs', () => {
   })
 
   it('passes props', () => {
-    const DecoratedComponent = decorateWithConfigs([], MockComponent)
+    const DecoratedComponent = decorateWithConfigs(
+      [MockDecorator],
+      MockComponent
+    )
     const output = render(
       <DecoratedComponent
         one={1}
@@ -105,7 +112,26 @@ describe('decorateWithConfigs', () => {
       />
     )
     expect(output.props.one).to.deep.equal(1)
+    expect(output.props.setOne).to.be.a('function')
     expect(output.props.two).to.deep.equal(2)
+  })
+
+  it('obeys onNext', () => {
+    const DecoratedComponent = decorateWithConfigs(
+      [MockDecorator],
+      MockComponent
+    )
+    const renderer = createRenderer()
+    renderer.render(
+      <DecoratedComponent
+        one={1}
+        two={2}
+      />
+    )
+    const firstOutput = renderer.getRenderOutput()
+    expect(firstOutput.props.one).to.deep.equal(1)
+    firstOutput.props.setOne(2)
+    expect(renderer.getRenderOutput().props.one).to.deep.equal(2)
   })
 
   it('renders the base component', () => {
