@@ -134,6 +134,25 @@ describe('decorateWithConfigs', () => {
     expect(renderer.getRenderOutput().props.one).to.deep.equal(2)
   })
 
+  it('calls unmount', () => {
+    let unmounted = false
+    const DecoratedComponent = decorateWithConfigs([{
+      displayName: () => 'mock',
+      step: (props) => props,
+      unmount: () => unmounted = true,
+    }], MockComponent)
+    const renderer = createRenderer()
+    renderer.render(
+      <DecoratedComponent
+        one={1}
+        two={2}
+      />
+    )
+    expect(unmounted).to.equal(false)
+    renderer.unmount()
+    expect(unmounted).to.equal(true)
+  })
+
   it('renders the base component', () => {
     const DecoratedComponent = decorateWithConfigs([], MockComponent)
     const output = render(<DecoratedComponent />)

@@ -28,6 +28,13 @@ export function makeDecoratorComponent(configs, BaseComponent) {
       {...BaseComponent.propTypes}
     ),
 
+    componentWillUnmount() {
+      reduce(
+        'unmount',
+        configs
+      )
+    },
+
     getDefaultProps() {
       const {getDefaultProps} = BaseComponent
       return reduce(
