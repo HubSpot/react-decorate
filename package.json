@@ -18,7 +18,7 @@
     "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min",
     "lint": "eslint ./src",
     "prepublish": "npm run lint && npm test && npm run build",
-    "test": "mocha --compilers js:babel-register 'src/**/*-test.js'",
+    "test": "mocha --bail --compilers js:babel-register 'src/**/*-test.js'",
     "test-watch": "mocha -w --compilers js:babel-register 'src/**/*.js'"
   },
   "author": "Colby Rabideau<crabideau@hubspot.com>",

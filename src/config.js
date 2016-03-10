@@ -1,31 +1,30 @@
 import invariant from 'invariant'
 
-function isFunc(fn) {
-  return typeof fn === 'function'
+function enforceRequired(key, config) {
+  const fn = config[key]
+  invariant(
+    typeof fn === 'function',
+    'Invalid config. expected `%s` to be a function but got `%s`',
+    key,
+    fn
+  )
 }
 
-function isOptionalFunc(fn) {
-  return !fn || isFunc(fn)
-}
-
-export function isValidConfig(config) {
-  return (
-    isFunc(config.getPropName) &&
-    (!config.handleChange || isFunc(config.getHandlerName)) &&
-    isOptionalFunc(config.getDisplayName) &&
-    isOptionalFunc(config.getInitialState) &&
-    isOptionalFunc(config.getPropTypes) &&
-    isOptionalFunc(config.handleChange) &&
-    isOptionalFunc(config.componentWillMount) &&
-    isOptionalFunc(config.componentWillReceiveProps) &&
-    isOptionalFunc(config.componentWillUnmount)
+function enforceOptional(key, config) {
+  const fn = config[key]
+  invariant(
+    typeof fn === 'function' || fn === undefined,
+    'Invalid config. expected `%s` to be a function or undefined but got `%s`',
+    key,
+    fn
   )
 }
 
 export function enforceValidConfig(config) {
-  invariant(
-    isValidConfig(config),
-    'invalid configuration'
-  )
+  enforceRequired('displayName', config)
+  enforceOptional('defaultProps', config)
+  enforceOptional('propTypes', config)
+  enforceRequired('step', config)
+  enforceOptional('unmount', config)
   return config
 }

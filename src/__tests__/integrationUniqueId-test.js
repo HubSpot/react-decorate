@@ -3,21 +3,35 @@ import makeDecorator from '../makeDecorator'
 import React from 'react'
 import { createRenderer } from 'react-addons-test-utils'
 
+function once(fn) {
+  let happend = false
+  let result
+  return (...args) => {
+    if (!happend) {
+      result = fn(...args)
+      happend = true
+    }
+    return result
+  }
+}
+
 describe('example: UniqueIds', () => {
   let nextId = 1
-  const uniqueId = makeDecorator(({prop}) => ({
-    getPropName() {
-      return prop || 'uniqueId'
-    },
-    getInitialState() {
-      let cache = {}
-      return (key) => {
-        if (!cache.hasOwnProperty(key)) {
-          cache[key] = `${key}-${nextId++}`
-        }
-        return cache[key]
+  const makeUniqueIder = () => {
+    let cache = {}
+    return (key) => {
+      if (!cache.hasOwnProperty(key)) {
+        cache[key] = `${key}-${nextId++}`
       }
-    },
+      return cache[key]
+    }
+  }
+
+  const uniqueId = makeDecorator(({prop}) => ({
+    displayName: () => 'uniqueId',
+    step: once(() => ({
+      [prop || 'uniqueId']: makeUniqueIder(),
+    })),
   }))
 
   const UIDComponent = uniqueId({
