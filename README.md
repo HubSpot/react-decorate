@@ -15,21 +15,20 @@ This could be useful for making a `<form>` where the `<label>`s are separated fr
 import { makeDecorator } from 'react-decorate'
 
 let nextId = 1
-export default makeDecorator((propName) => {
+export default makeDecorator((propName = 'uniqueId') => {
+  let idCache = {}
+  const uniqueId = (idKey) => {
+    if (!idCache.hasOwnProperty(idKey)) {
+      idCache[idKey] = `pid-${idKey}-${nextId++}`
+    }
+    return idCache[idKey]
+  }
   return { // this object is a DecoratorConfig
-    getPropName() {
-      return propName
-    },
-
-    getInitialState() {
-      let idCache = {}
-      return (idKey) => {
-        if (!idCache.hasOwnProperty(idKey)) {
-          idCache[idKey] = `pid-${idKey}-${nextId++}`
-        }
-        return idCache[idKey]
-      }
-    },
+    displayName: () => propName,
+    step: (props) => ({
+      ...props,
+      [propName]: uniqueId,
+    }),
   }
 })
 ```
