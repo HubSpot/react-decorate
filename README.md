@@ -81,31 +81,66 @@ const MyForm = ({uniqueId}) => (
 export default persistentUniqueId('uniqueId')(MyForm);
 ```
 
+## Updating state with `onNext`
+
+Let's create a counter decorator that passes some state (a counter) and also a function that can be used to increment that count.
+We can use the `onNext` function that's passed to `nextProps` to cause our decorator to be re-evaluated.
+
+```javascript
+const counter = makeDecorator((
+  valueName = 'count',
+  incName = 'incCount'
+) => {
+  let count = 0
+  return {
+    displayName: () => `counter(${valueName},${incName})`,
+    nextProps: (props, onNext) => ({
+      ...props,
+      [valueName]: count,
+      [incName]: () => {
+        count += 1
+        onNext() // trigger a re-render
+      },
+    }),
+  }
+})
+```
+
+Now we could use that to creact a button that displays how many times it's been clicked.
+
+```javascript
+const ClickCounter = counter(
+  'clickCount',
+  'incClickCount'
+)(({clickCount, incClickCount}) => (
+  <button onClick={incClickCount}>
+    {clickCount} clicks!
+  </button>
+))
+```
+
 ## Composition with `composeDecorators`
 
 The best part is that decorators created with `react-decorate` are composable.
-If we had another decorator called `counter` and we wanted to apply both `counter` and `persistentUniqueId` to our component that would be easy.
-`counter` adds two props.
-One is the `count` so far and the other is a function that allows us to increment the count.
-`composeDecorators` handles that for us!
+Using `composeDecorators` we can apply both the `counter` and `persistentUniqueId` decorators to our component, while only creating one additional wrapper component.
 
 ```javascript
 import counter from './counter'
 import persistentUniqueId from './persistentUniqueId'
 import { composeDecorators } from 'react-decorate'
 
-const MyForm = ({count, incCount, uniqueId}) => (
+const MyForm = ({clickCount, incClickCount, uniqueId}) => (
   <div>
     <label htmlFor={uniqueId('name')}>Name</label>
     <input name={uniqueId('name')} />
-    <button onClick={incCount}>
-      {count} clicks
+    <button onClick={incClickCount}>
+      {clickCount} clicks
     </button>
   </div>
 )
 
 export default composeDecorators(
-  counter('count', 'incCount'),
+  counter('clickCount', 'incClickCount'),
   persistentUniqueId('uniqueId')
 )(MyForm);
 `
