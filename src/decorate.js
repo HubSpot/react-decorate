@@ -40,7 +40,7 @@ export function makeDecoratorComponent(configs, BaseComponent) {
       return reduce(
         'defaultProps',
         configs,
-        getDefaultProps ? getDefaultProps() : {}
+        typeof getDefaultProps === 'function' ? getDefaultProps() : {}
       )
     },
 
