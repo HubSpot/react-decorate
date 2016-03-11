@@ -13,8 +13,8 @@
   },
   "scripts": {
     "build:commonjs": "BABEL_ENV=commonjs babel src --ignore *-test.js --out-dir lib",
-    "build:umd": "NODE_ENV=development webpack src/index.js dist/ReactDecorator.js",
-    "build:umd:min": "NODE_ENV=production webpack src/index.js dist/ReactDecorator.min.js",
+    "build:umd": "NODE_ENV=development webpack src/index.js dist/ReactDecorate.js",
+    "build:umd:min": "NODE_ENV=production webpack -p src/index.js dist/ReactDecorate.min.js",
     "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min",
     "lint": "eslint ./src",
     "prepublish": "npm run lint && npm test && npm run build",
