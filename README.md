@@ -8,70 +8,60 @@
 It takes a function that returns `DecoratorConfig`, and returns a curried decorator function.
 
 For example, let's create a decorator that creates a persistent `uniqueId` function we can use in our components.
-This could be useful for making a `<form>` where the `<label>`s are separated from their `<input>`s.
+This could be useful for making `<label>`s that don't contain their `<input>`s.
 
 ```javascript
 // persistentUniqueId.js
 import { makeDecorator } from 'react-decorate'
 
 let nextId = 1
-export default makeDecorator((propName) => {
+export default makeDecorator((propName = 'uniqueId') => {
+  let idCache = {}
+  const uniqueId = (idKey) => {
+    if (!idCache.hasOwnProperty(idKey)) {
+      idCache[idKey] = `pid-${idKey}-${nextId++}`
+    }
+    return idCache[idKey]
+  }
   return { // this object is a DecoratorConfig
-    getPropName() {
-      return propName
-    },
-
-    getInitialState() {
-      let idCache = {}
-      return (idKey) => {
-        if (!idCache.hasOwnProperty(idKey)) {
-          idCache[idKey] = `pid-${idKey}-${nextId++}`
-        }
-        return idCache[idKey]
-      }
-    },
+    displayName: () => 'uniqueId',
+    step: (props) => ({
+      ...props,
+      [propName]: uniqueId,
+    }),
   }
 })
 ```
 
-Let's break down each part of this config.
+This decorator is pretty simple, but let's break down each part of the config.
 
-Each decorator generates a value that will be passed to the decorated component via a prop.
-`getPropName` returns a string which is the name of the prop that will be passed to the decorated component.
-In most cases, this name will be a parameter of the constructor function for easy customization.
+A decorator has a chance to intercept and augment the props that will be passed to the base component.
+A decorator may also augement static properties of a component class like prop types, and default prop values.
+Each decorator is required to define a function that returns a displayName so `react-decorate` can generate a descriptive displayName for the higher order component.
 
 ```javascript
 // ...
   return {
-    getPropName() {
-      // our persistentUniqueId function will be accessible in the decorated
-      // components at `this.props.uniqueId` (in the default case)
-      return propName
-    },
+    // our higher order component's displayName will be `Decorated(uniqueId)(BaseComponent)`
+    displayName: () => propName,
     // ...
   }
-}
+// ...
 ```
 
-A `DecoratorConfig` may define a subset of the react lifecycle methods. 
-It looks a bit like a regular react mixin, but each method returns a value instead of triggering a side effect with set state.
-Since the value of `persistentUniqueId` won't change over time we can defined it just in terms of `getInitialState`.
+`nextProps` is the most useful decorator parameter.
+It allows us to add, alter, or remove props before they're passed to our base component.
 
 ```javascript
 // ...
   return {
     // ...
-    getInitialState() {
-      let idCache = {}
-      // we return a uniqueId function that closes over an idCache
-      // we could also use something like `_.memoize`
-      return (idKey) => {
-        if (!idCache.hasOwnProperty(idKey)) {
-          idCache[idKey] = `pid-${idKey}-${nextId++}`
-        }
-        return idCache[idKey]
-      }
-    },
+    nextProps: (props) => ({
+      // in this case we pass through all the existing props
+      ...props,
+      // and add a new one containing our uniqueId function
+      [propName]: uniqueId,
+    }),
   }
 // ...
 ```
@@ -89,4 +79,34 @@ const MyForm = ({uniqueId}) => (
 )
 
 export default persistentUniqueId('uniqueId')(MyForm);
+```
+
+## Composition with `composeDecorators`
+
+The best part is that decorators created with `react-decorate` are composable.
+If we had another decorator called `counter` and we wanted to apply both `counter` and `persistentUniqueId` to our component that would be easy.
+`counter` adds two props.
+One is the `count` so far and the other is a function that allows us to increment the count.
+`composeDecorators` handles that for us!
+
+```javascript
+import counter from './counter'
+import persistentUniqueId from './persistentUniqueId'
+import { composeDecorators } from 'react-decorate'
+
+const MyForm = ({count, incCount, uniqueId}) => (
+  <div>
+    <label htmlFor={uniqueId('name')}>Name</label>
+    <input name={uniqueId('name')} />
+    <button onClick={incCount}>
+      {count} clicks
+    </button>
+  </div>
+)
+
+export default composeDecorators(
+  counter('count', 'incCount'),
+  persistentUniqueId('uniqueId')
+)(MyForm);
+`
 ```

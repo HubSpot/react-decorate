@@ -1,6 +1,6 @@
 {
   "name": "react-decorate",
-  "version": "2.0.4",
+  "version": "3.0.0",
   "description": "Build composable, stateful decorators for React.",
   "main": "index.js",
   "bugs": {
@@ -13,12 +13,12 @@
   },
   "scripts": {
     "build:commonjs": "BABEL_ENV=commonjs babel src --ignore *-test.js --out-dir lib",
-    "build:umd": "NODE_ENV=development webpack src/index.js dist/ReactDecorator.js",
-    "build:umd:min": "NODE_ENV=production webpack src/index.js dist/ReactDecorator.min.js",
+    "build:umd": "NODE_ENV=development webpack src/index.js dist/ReactDecorate.js",
+    "build:umd:min": "NODE_ENV=production webpack -p src/index.js dist/ReactDecorate.min.js",
     "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min",
     "lint": "eslint ./src",
     "prepublish": "npm run lint && npm test && npm run build",
-    "test": "mocha --compilers js:babel-register 'src/**/*-test.js'",
+    "test": "mocha --bail --compilers js:babel-register 'src/**/*-test.js'",
     "test-watch": "mocha -w --compilers js:babel-register 'src/**/*.js'"
   },
   "author": "Colby Rabideau<crabideau@hubspot.com>",

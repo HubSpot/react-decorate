@@ -3,10 +3,9 @@
 
 var webpack = require('webpack')
 
-var isProd = process.env.NODE_ENV === 'production'
 var config = {
   externals: {
-    'react': {
+    react: {
       amd: 'react',
       commonjs2: 'react',
       commonjs: 'react',
@@ -25,25 +24,10 @@ var config = {
     libraryTarget: 'umd',
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
-      '__DEV__': !isProd,
+      '__DEV__': process.env.NODE_ENV === 'production',
     }),
   ],
 };
-
-if (isProd) {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        pure_getters: true,
-        unsafe: true,
-        unsafe_comps: true,
-        screw_ie8: true,
-        warnings: false,
-      }
-    })
-  )
-}
 
 module.exports = config
