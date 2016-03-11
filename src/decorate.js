@@ -46,7 +46,7 @@ export function makeDecoratorComponent(configs, BaseComponent) {
 
     getProps() {
       return reduce(
-        'step',
+        'nextProps',
         configs,
         {...this.props},
         this.handleNext

@@ -24,7 +24,7 @@ export function enforceValidConfig(config) {
   enforceRequired('displayName', config)
   enforceOptional('defaultProps', config)
   enforceOptional('propTypes', config)
-  enforceRequired('step', config)
+  enforceRequired('nextProps', config)
   enforceOptional('unmount', config)
   return config
 }

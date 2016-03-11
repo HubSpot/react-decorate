@@ -15,7 +15,7 @@ describe('example: UniqueIds', () => {
     }
     return { // this object is a DecoratorConfig
       displayName: () => propName,
-      step: (props) => ({
+      nextProps: (props) => ({
         ...props,
         [propName]: uniqueId,
       }),

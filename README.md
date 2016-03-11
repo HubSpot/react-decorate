@@ -25,7 +25,7 @@ export default makeDecorator((propName = 'uniqueId') => {
   }
   return { // this object is a DecoratorConfig
     displayName: () => 'uniqueId',
-    step: (props) => ({
+    nextProps: (props) => ({
       ...props,
       [propName]: uniqueId,
     }),

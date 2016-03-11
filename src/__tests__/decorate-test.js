@@ -42,7 +42,7 @@ const MockDecorator = {
       type: 'test',
     }
   },
-  step: (props, onNext) => ({
+  nextProps: (props, onNext) => ({
     ...props,
     one: mockState,
     setOne: (next) => {
@@ -54,7 +54,7 @@ const MockDecorator = {
 
 const OtherDecorator = {
   displayName: () => 'other',
-  step: () => ({
+  nextProps: () => ({
     two: 2,
   }),
 }
@@ -138,7 +138,7 @@ describe('decorateWithConfigs', () => {
     let unmounted = false
     const DecoratedComponent = decorateWithConfigs([{
       displayName: () => 'mock',
-      step: (props) => props,
+      nextProps: (props) => props,
       unmount: () => unmounted = true,
     }], MockComponent)
     const renderer = createRenderer()
