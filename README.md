@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/react-decorate.svg?style=flat-square)](https://www.npmjs.com/package/react-decorate)
 [![build status](https://img.shields.io/travis/HubSpot/react-decorate/master.svg?style=flat-square)](https://travis-ci.org/HubSpot/react-decorate)
+[![npm downloads](https://img.shields.io/npm/dm/react-decorate.svg?style=flat-square)](https://www.npmjs.com/package/react-decorate)
 
 `react-decorate` aims to help you build composable, stateful decorators for React components.
 
