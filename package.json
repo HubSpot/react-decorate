@@ -19,7 +19,13 @@
     "lint": "eslint ./src",
     "prepublish": "npm run lint && npm test && npm run build",
     "test": "mocha --bail --compilers js:babel-register 'src/**/*-test.js'",
-    "test-watch": "mocha -w --compilers js:babel-register 'src/**/*.js'"
+    "test-watch": "mocha -w --compilers js:babel-register 'src/**/*.js'",
+    "docs:clean": "rimraf _book",
+    "docs:prepare": "gitbook install",
+    "docs:build": "npm run docs:prepare && gitbook build -g HubSpot/react-decorate",
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:publish": "npm run docs:clean && npm run docs:build && cp CNAME _book && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:HubSpot/react-decorate gh-pages --force"
+  
   },
   "author": "Colby Rabideau<crabideau@hubspot.com>",
   "license": "MIT",
@@ -37,10 +43,12 @@
     "chai": "^3.5.0",
     "eslint": "1.10.3",
     "eslint-plugin-react": "^4.2.1",
+    "gitbook-cli": "^2.1.2",
     "invariant": "^2.2.0",
     "mocha": "^2.4.5",
     "react": "^0.14.0",
     "react-addons-test-utils": "^0.14.7",
+    "rimraf": "^2.5.2",
     "webpack": "^1.12.14"
   }
 }
