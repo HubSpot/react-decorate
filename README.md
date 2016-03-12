@@ -1,7 +1,7 @@
 # react-decorate
 
-[![npm version](https://badge.fury.io/js/react-decorate.svg)](https://badge.fury.io/js/react-decorate)
-[![Build status](https://api.travis-ci.org/HubSpot/react-decorate.svg)](https://travis-ci.org/HubSpot/react-decorate)
+[![npm version](https://img.shields.io/npm/v/react-decorate.svg?style=flat-square)](https://www.npmjs.com/package/react-decorate)
+[![build status](https://img.shields.io/travis/HubSpot/react-decorate/master.svg?style=flat-square)](https://travis-ci.org/HubSpot/react-decorate)
 
 `react-decorate` aims to help you build composable, stateful decorators for React components.
 
