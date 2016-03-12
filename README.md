@@ -146,5 +146,4 @@ export default composeDecorators(
   counter('clickCount', 'incClickCount'),
   persistentUniqueId('uniqueId')
 )(MyForm);
-`
 ```
