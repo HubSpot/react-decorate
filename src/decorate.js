@@ -3,51 +3,53 @@ import invariant from 'invariant'
 import partial from './partial'
 import React from 'react'
 
-function getDisplayName({displayName}) {
-  displayName()
+function displayName(configs, BaseComponent) {
+  const decoratorNames = configs.map(({displayName}) => displayName())
+  return `Decorated(${BaseComponent.displayName})(${decoratorNames})`
 }
 
-function reduce(key, configs, initial, ...args) {
-  return configs.reduce((result, config) => {
-    const operation = config[key]
-    if (typeof operation !== 'function') {
-      return result
+function pluck(key, configs) {
+  return configs.reduce((res, config) => {
+    if (config.hasOwnProperty(key)) {
+      res.push(config[key])
     }
-    return operation(result, ...args)
-  }, initial)
+    return res
+  }, [])
+}
+
+function reduce(operations, initial, ...args) {
+  return operations.reduce(
+    (result, operation) => operation(result, ...args),
+    initial
+  )
 }
 
 export function makeDecoratorComponent(configs, BaseComponent) {
+  const nextProps = pluck('nextProps', configs)
+  const unmounts = pluck('unmount', configs)
   return React.createClass({
-    displayName:
-      `Decorated(${BaseComponent.displayName})(${configs.map(getDisplayName)})`,
+    displayName: displayName(configs, BaseComponent),
 
     propTypes: reduce(
-      'propTypes',
-      configs,
+      pluck('propTypes', configs),
       {...BaseComponent.propTypes}
     ),
 
     componentWillUnmount() {
-      reduce(
-        'unmount',
-        configs
-      )
+      reduce(unmounts)
     },
 
     getDefaultProps() {
       const {getDefaultProps} = BaseComponent
       return reduce(
-        'defaultProps',
-        configs,
+        pluck('defaultProps', configs),
         typeof getDefaultProps === 'function' ? getDefaultProps() : {}
       )
     },
 
     getProps() {
       return reduce(
-        'nextProps',
-        configs,
+        nextProps,
         {...this.props},
         this.handleNext
       )
