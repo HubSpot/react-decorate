@@ -1,5 +1,7 @@
 # react-decorate
 
+[![Build status](https://api.travis-ci.org/HubSpot/react-decorate.svg)](https://travis-ci.org/HubSpot/react-decorate)
+
 `react-decorate` aims to help you build composable, stateful decorators for React components.
 
 ## Diving in
