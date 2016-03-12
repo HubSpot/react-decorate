@@ -51,7 +51,7 @@
     "react/jsx-boolean-value": [2, "always"],
     "react/jsx-no-undef": 2,
     "jsx-quotes": 2,
-    "react/jsx-sort-prop-types": 2,
+    "react/sort-prop-types": 2,
     "react/jsx-sort-props": 2,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
