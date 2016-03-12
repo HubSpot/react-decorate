@@ -18,7 +18,7 @@ This could be useful for making `<label>`s that don't contain their `<input>`s.
 import { makeDecorator } from 'react-decorate'
 
 let nextId = 1
-export default makeDecorator((propName = 'uniqueId') => {
+export default makeDecorator(() => {
   let idCache = {}
   const uniqueId = (idKey) => {
     if (!idCache.hasOwnProperty(idKey)) {
@@ -46,7 +46,7 @@ Each decorator is required to define a function that returns a displayName so `r
 // ...
   return {
     // our higher order component's displayName will be `Decorated(uniqueId)(BaseComponent)`
-    displayName: () => propName,
+    displayName: () => 'uniqueId',
     // ...
   }
 // ...
@@ -81,7 +81,7 @@ const MyForm = ({uniqueId}) => (
   </form>
 )
 
-export default persistentUniqueId('uniqueId')(MyForm);
+export default persistentUniqueId()(MyForm);
 ```
 
 ## Updating state with `onNext`
@@ -144,6 +144,6 @@ const MyForm = ({clickCount, incClickCount, uniqueId}) => (
 
 export default composeDecorators(
   counter('clickCount', 'incClickCount'),
-  persistentUniqueId('uniqueId')
+  persistentUniqueId()
 )(MyForm);
 ```
