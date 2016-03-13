@@ -1,5 +1,9 @@
 ## Table of Contents
 
 * [README](/README.md)
-* [Creating props](/docs/CreatingProps.md)
-* [Stateful props](/docs/StatefulProps.md)
+* [Introdution](/docs/intro/README.md)
+  * [Creating props](/docs/intro/CreatingProps.md)
+  * [Stateful props](/docs/intro/StatefulProps.md)
+* [Recipes](/docs/recipes/README.md)
+  * [Persistent Unique Ids](/docs/recipes/PersistentUniqueIds.md)
+  * [Uncontrolled Value](/docs/recipes/UncontrolledValue.md)

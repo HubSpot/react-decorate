@@ -7,7 +7,7 @@
   "pluginsConfig": {
     "edit-link": {
       "base": "https://github.com/HubSpot/react-decorate/tree/master",
-      "label": "Edit This Page"
+      "label": "Edit on GitHub"
     },
     "github": {
       "url": "https://github.com/HubSpot/react-decorate/"
