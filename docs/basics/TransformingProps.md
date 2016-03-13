@@ -50,3 +50,7 @@ The rendered markup would look like...
   5 clicks!
 </button>
 ```
+
+## Next up
+
+Learn about [tracking state](/docs/basics/TrackingState.md) by exporting an `incrementCount` prop from `counter`.
