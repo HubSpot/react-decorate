@@ -1,46 +1,52 @@
 # Transforming props
 
 Decorators may read or change any number of the props passed to the HOC.
-A decorator can even provide additional propTypes to ensure the API of the HOC is clear.
+A decorator can even provide additional propTypes and defaults to ensure the API of the HOC is clear.
+
+Let's add a `defaultCount` prop to the decorator from the previous example.
 
 ```javascript
 import { PropTypes } from 'react'
 
-const incrementProp = (propName) => ({
-  displayName: () => `increment(${propName})`,
+const counter = () => ({
+  displayName: () => 'counter',
   propTypes: (types) => ({
     ...types,
-    [propName]: PropTypes.number.isRequired,
+    defaultCount: PropTypes.number.isRequired,
   }),
-  nextProps: (props) => ({
+  defaultProps: (defaults) => ({
+    ...defaults,
+    defaultCount: 0,
+  }),
+  nextProps: ({defaultCount, ...props}) => ({
     ...props,
-    [propName]: props[propName] + 1,
+    count: defaulCount,
   }),
 })
 ```
 
-In `propTypes`, the `incrementProp` decorator adds a propType to ensure that the prop it's expecting is defined.
-In `nextProps` it increments the value of the prop.
-Notice that the name of the actual prop, i.e. `propName`, is parameterized to allow the decorator to be applied multiple times.
+In `propTypes`, decorator adds a `defaultCount` propType to ensure that the prop it's expecting is defined.
+In `defaultProps`, it sets the default value of `defaultCount` to `0`.
+In `nextProps` it renames `defaultCount` to `count`.
 
-Usage of this decorator might look something like this...
+Now if we decorate a component with `counter`, that component will receive a prop named `count` with a value of `0` or whatever `defaultCount` was provided.
 
 ```javascript
-const NumberPlusOne = incrementProp(
-  'number'
-)(
-  ({number}) => <span>{number}</span>
-)
+const ClickCounter = counter()(
+  ({count}) => <button>{count} clicks!</button>
+);
 ```
 
-If we rendered `NumberPlusOne` like...
+If we rendered `ClickCounter` like...
 
 ```javascript
-<NumberPlusOne number={9} />
+<ClickCounter defaultCount={5} />
 ```
 
 The rendered markup would look like...
 
 ```html
-<span>{10}</span>
+<button>
+  5 clicks!
+</button>
 ```

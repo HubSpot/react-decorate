@@ -5,11 +5,11 @@ At their most basic, react decorators can create one more more new props and pas
 ```javascript
 import { makeDecorator } from 'react-decorate'
 
-const googleUrlProp = makeDecorator(() => ({
-  displayName: () => 'testProp',
+const counter = makeDecorator(() => ({
+  displayName: () => 'counter',
   nextProps: (props) => ({
     ...props,
-    googleUrl: 'http://google.com',
+    count: 0,
   }),
 }))
 ```
@@ -19,20 +19,28 @@ const googleUrlProp = makeDecorator(() => ({
 `nextProps` is run each time our HOC is re-rendered.
 Its first argument is either the props that were passed to the HOC or, in the case of a composed decorator, the result of the previous decorators `nextProps`.
 
-Now if we decorate a component with `googleUrlProp`, that component will receive a prop named `googleUrl` with a value of `"http://google.com"`.
+Now if we decorate a component with `counter`, it will receive a prop named `count` with a value of `0`.
 
 ```javascript
-export default googleUrlProp()(({googleUrl}) => (
-  <a href={googleUrl}>
-    Go to Google
-  </a>
+const ClickCounter = counter()(
+  ({count}) => <button>{count} clicks!</button>
 );
 ```
 
-This component would render markup like...
+Now if we render `ClickCounter` like...
+
+```javascript
+<ClickCounter />
+```
+
+It's markup will look like...
 
 ```html
-<a href="http://google.com">
-  Go to Google
-</a>
+<button>
+  0 clicks!
+</button>
 ```
+
+## Next up
+
+Learn about [transforming props](/docs/basics/TransformingProps.md) and adding propTypes by adding a `defaultCount` prop to our HOC.
