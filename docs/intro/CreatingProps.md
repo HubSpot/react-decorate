@@ -1,4 +1,4 @@
-# Creating Props
+# Creating props
 
 At their most basic, react decorators can create one more more new props and pass them down to the base component.
 
