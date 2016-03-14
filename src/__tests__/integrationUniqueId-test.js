@@ -1,7 +1,7 @@
 import { expect } from 'chai'
+import { shallow } from 'enzyme'
 import makeDecorator from '../makeDecorator'
 import React from 'react'
-import { createRenderer } from 'react-addons-test-utils'
 
 describe('example: UniqueIds', () => {
   let nextId = 1
@@ -29,17 +29,16 @@ describe('example: UniqueIds', () => {
   )
 
   it('passes uid', () => {
-    const renderer = createRenderer()
-    renderer.render(<UIDComponent />)
-    let output = renderer.getRenderOutput()
-    const {uid} = output.props
-    expect(uid('test')).to.equal('test-1')
-    expect(uid('test')).to.equal('test-1')
-    expect(uid('test')).to.equal('test-1')
-    expect(uid('other')).to.equal('other-2')
-    renderer.render(<UIDComponent />)
-    output = renderer.getRenderOutput()
-    expect(uid('test')).to.equal('test-1')
-    expect(uid('other')).to.equal('other-2')
+    const root = shallow(<UIDComponent />)
+    const firstUid = root.prop('uid')
+    expect(firstUid('test')).to.equal('test-1')
+    expect(firstUid('test')).to.equal('test-1')
+    expect(firstUid('test')).to.equal('test-1')
+    expect(firstUid('other')).to.equal('other-2')
+    root.update()
+    const secondUid = root.prop('uid')
+    expect(firstUid).to.equal(secondUid)
+    expect(secondUid('test')).to.equal('test-1')
+    expect(secondUid('other')).to.equal('other-2')
   })
 })

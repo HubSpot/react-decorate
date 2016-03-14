@@ -1,13 +1,7 @@
 import { expect } from 'chai'
+import { shallow } from 'enzyme'
 import makeDecorator from '../makeDecorator'
 import React from 'react'
-import { createRenderer } from 'react-addons-test-utils'
-
-function render(element) {
-  const renderer = createRenderer()
-  renderer.render(element)
-  return renderer.getRenderOutput()
-}
 
 describe('example: Counter', () => {
   const counter = makeDecorator((
@@ -38,20 +32,18 @@ describe('example: Counter', () => {
   ))
 
   it('passes count and incCount', () => {
-    const {props: {count, incCount}} = render(<ClickCounter />)
+    const {count, incCount} = shallow(<ClickCounter />).props()
     expect(count).to.equal(0)
     expect(incCount).to.be.a('function')
   })
 
   it('increments the count', () => {
-    const renderer = createRenderer()
-    renderer.render(<ClickCounter />)
-    const firstOutput = renderer.getRenderOutput()
-    expect(firstOutput.props.count).to.equal(0)
-    firstOutput.props.incCount()
-    firstOutput.props.incCount()
-    firstOutput.props.incCount()
-    const nextOutput = renderer.getRenderOutput()
-    expect(nextOutput.props.count).to.equal(3)
+    const root = shallow(<ClickCounter />)
+    expect(root.prop('count')).to.equal(0)
+    root.prop('incCount')()
+    root.prop('incCount')()
+    root.prop('incCount')()
+    root.update()
+    expect(root.prop('count')).to.equal(3)
   })
 })

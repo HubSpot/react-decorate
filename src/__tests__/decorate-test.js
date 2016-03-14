@@ -1,16 +1,7 @@
 import { decorateWithConfigs } from '../decorate'
 import { expect } from 'chai'
+import { shallow } from 'enzyme'
 import React from 'react'
-import {
-  createRenderer,
-  isElementOfType,
-} from 'react-addons-test-utils'
-
-function render(element) {
-  const renderer = createRenderer()
-  renderer.render(element)
-  return renderer.getRenderOutput()
-}
 
 const MockComponent = React.createClass({
   propTypes: {
@@ -77,9 +68,9 @@ describe('decorateWithConfigs', () => {
       [MockDecorator],
       MockComponent
     )
-    const output = render(<DecoratedComponent />)
-    expect(output.props.type).to.equal('test')
-    expect(output.props.unrelated).to.equal('unrelated')
+    const root = shallow(<DecoratedComponent />)
+    expect(root.prop('type')).to.equal('test')
+    expect(root.prop('unrelated')).to.equal('unrelated')
   })
 
   it('generates propTypes', () => {
@@ -96,8 +87,8 @@ describe('decorateWithConfigs', () => {
       [OtherDecorator],
       MockComponent
     )
-    const output = render(<DecoratedComponent />)
-    expect(output.props.two).to.deep.equal(2)
+    const root = shallow(<DecoratedComponent />)
+    expect(root.prop('two')).to.deep.equal(2)
   })
 
   it('passes props', () => {
@@ -105,15 +96,15 @@ describe('decorateWithConfigs', () => {
       [MockDecorator],
       MockComponent
     )
-    const output = render(
+    const root = shallow(
       <DecoratedComponent
         one={1}
         two={2}
       />
     )
-    expect(output.props.one).to.deep.equal(1)
-    expect(output.props.setOne).to.be.a('function')
-    expect(output.props.two).to.deep.equal(2)
+    expect(root.prop('one')).to.deep.equal(1)
+    expect(root.prop('setOne')).to.be.a('function')
+    expect(root.prop('two')).to.deep.equal(2)
   })
 
   it('obeys onNext', () => {
@@ -121,17 +112,16 @@ describe('decorateWithConfigs', () => {
       [MockDecorator],
       MockComponent
     )
-    const renderer = createRenderer()
-    renderer.render(
+    const root = shallow(
       <DecoratedComponent
         one={1}
         two={2}
       />
     )
-    const firstOutput = renderer.getRenderOutput()
-    expect(firstOutput.props.one).to.deep.equal(1)
-    firstOutput.props.setOne(2)
-    expect(renderer.getRenderOutput().props.one).to.deep.equal(2)
+    expect(root.prop('one')).to.equal(1)
+    root.prop('setOne')(2)
+    root.update()
+    expect(root.prop('one')).to.equal(2)
   })
 
   it('calls unmount', () => {
@@ -141,21 +131,20 @@ describe('decorateWithConfigs', () => {
       nextProps: (props) => props,
       unmount: () => unmounted = true,
     }], MockComponent)
-    const renderer = createRenderer()
-    renderer.render(
+    const root = shallow(
       <DecoratedComponent
         one={1}
         two={2}
       />
     )
     expect(unmounted).to.equal(false)
-    renderer.unmount()
+    root.unmount()
     expect(unmounted).to.equal(true)
   })
 
   it('renders the base component', () => {
     const DecoratedComponent = decorateWithConfigs([], MockComponent)
-    const output = render(<DecoratedComponent />)
-    expect(isElementOfType(output, MockComponent)).to.equal(true)
+    const root = shallow(<DecoratedComponent />)
+    expect(root.is(MockComponent)).to.equal(true)
   })
 })
