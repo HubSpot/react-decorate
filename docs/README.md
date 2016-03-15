@@ -1,7 +1,7 @@
 ## Table of Contents
 
 * [README](/README.md)
-* [Introdution](/docs/Introduction.md)
+* [Introduction](/docs/Introduction.md)
 * [Basics](/docs/basics/README.md)
   * [Creating props](/docs/basics/CreatingProps.md)
   * [Transforming props](/docs/basics/TransformingProps.md)
