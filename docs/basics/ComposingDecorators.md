@@ -30,4 +30,4 @@ We can compose any number of decorators this way and each is applied in the orde
 
 ## Further reading
 
-For more concrete examples, check out the [recipes section](../recipes/README.md).
+For more concrete examples, check out the [cookbook section](../cookbook/README.md).

@@ -8,6 +8,5 @@
   * [Keeping state](/docs/basics/KeepingState.md)
   * [Parameterizing decorators](/docs/basics/ParameterizingDecorators.md)
   * [Composing decorators](/docs/basics/ComposingDecorators.md)
-* [Recipes](/docs/recipes/README.md)
-  * [Persistent Unique Ids](/docs/recipes/PersistentUniqueIds.md)
-  * [Uncontrolled Value](/docs/recipes/UncontrolledValue.md)
+* [Cookbook](/docs/cookbook/README.md)
+  * [Persistent unique ids](/docs/cookbook/PersistentUniqueIds.md)
