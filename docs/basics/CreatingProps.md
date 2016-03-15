@@ -43,4 +43,4 @@ It's markup will look like...
 
 ## Next up
 
-Learn about [transforming props](/docs/basics/TransformingProps.md) and adding propTypes by adding a `defaultCount` prop to our HOC.
+Learn about [transforming props](./TransformingProps.md) and adding propTypes by adding a `defaultCount` prop to our HOC.

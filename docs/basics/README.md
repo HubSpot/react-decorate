@@ -1,4 +1,6 @@
 # Basics
-* [Creating props](/docs/intro/CreatingProps.md)
-* [Transforming props](/docs/intro/TransformingProps.md)
-* [Stateful props](/docs/intro/StatefulProps.md)
+* [Creating props](./CreatingProps.md)
+* [Transforming props](./TransformingProps.md)
+* [Keeping state](./KeepingState.md)
+* [Parameterizing decorators](./ParameterizingDecorators.md)
+* [Composing decorators](./ComposingDecorators.md)

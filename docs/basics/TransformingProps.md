@@ -8,7 +8,7 @@ Let's add a `defaultCount` prop to the decorator from the previous example.
 ```javascript
 import { PropTypes } from 'react'
 
-const counter = () => ({
+const counter = makeDecorator(() => ({
   displayName: () => 'counter',
   propTypes: (types) => ({
     ...types,
@@ -22,7 +22,7 @@ const counter = () => ({
     ...props,
     count: defaulCount,
   }),
-})
+}))
 ```
 
 In `propTypes`, decorator adds a `defaultCount` propType to ensure that the prop it's expecting is defined.
@@ -53,4 +53,4 @@ The rendered markup would look like...
 
 ## Next up
 
-Learn about [tracking state](/docs/basics/TrackingState.md) by exporting an `incrementCount` prop from `counter`.
+Learn about [tracking state](./KeepingState.md) by exporting an `incrementCount` prop from `counter`.

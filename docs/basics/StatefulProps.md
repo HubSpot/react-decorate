@@ -1,3 +1,0 @@
-# Stateful props
-
-
