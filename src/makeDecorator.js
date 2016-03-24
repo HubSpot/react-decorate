@@ -8,8 +8,8 @@ export default function makeDecorator(constructor) {
     'expected `constructor` to be a function but got `%s`',
     constructor
   )
-  return options => BaseComponent => {
-    const config = constructor(options)
+  return (...options) => BaseComponent => {
+    const config = constructor(...options)
     if (BaseComponent === IS_COMPOSING) {
       return config
     }

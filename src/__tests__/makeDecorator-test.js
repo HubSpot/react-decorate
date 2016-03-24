@@ -16,4 +16,13 @@ describe('makeDecorator', () => {
     const decorator = makeDecorator(() => config)
     expect(decorator()(IS_COMPOSING)).to.equal(config)
   })
+
+  it('accepts multiple options', () => {
+    let receivedOptions
+    const decorator = makeDecorator((...options) => {
+      receivedOptions = options
+    })
+    decorator(1, 2, 3, 4)(IS_COMPOSING)
+    expect(receivedOptions).to.deep.equal([1, 2, 3, 4])
+  })
 })
