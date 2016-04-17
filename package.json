@@ -1,6 +1,6 @@
 {
   "name": "react-decorate",
-  "version": "4.0.6",
+  "version": "5.0.0",
   "description": "Build composable, stateful decorators for React.",
   "main": "index.js",
   "bugs": {
