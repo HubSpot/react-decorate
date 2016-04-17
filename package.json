@@ -16,7 +16,7 @@
     "build:umd": "NODE_ENV=development webpack src/index.js dist/ReactDecorate.js",
     "build:umd:min": "NODE_ENV=production webpack -p src/index.js dist/ReactDecorate.min.js",
     "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min",
-    "lint": "eslint ./src",
+    "lint": "eslint --config ./.eslintrc --parser babel-eslint ./src",
     "prepublish": "npm run lint && npm test && npm run build",
     "test": "mocha --bail --compilers js:babel-register 'src/**/*-test.js'",
     "test-watch": "mocha -w --compilers js:babel-register 'src/**/*.js'",
