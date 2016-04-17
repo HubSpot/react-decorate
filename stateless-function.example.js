@@ -12,7 +12,7 @@ export const increment = ({transformProp, toProp}) => props => {
 };
 
 increment.displayName = ({transformProp, toProp}) => {
-  return `inc(${transformProp}->${toProp})`;
+  return `increment(${transformProp}->${toProp})`;
 };
 
 increment.defaultProps = ({transformProp}) => defaults => {
@@ -21,7 +21,7 @@ increment.defaultProps = ({transformProp}) => defaults => {
   });
 };
 
-increment.propTypes = ({transformProp, toProp}) => propTypes => {
+increment.propTypes = ({transformProp}) => propTypes => {
   return splat(propTypes, {
     [transformProp]: PropTypes.number.isRequired,
   });
