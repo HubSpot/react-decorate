@@ -1,9 +1,9 @@
 import { expect } from 'chai';
+import Decorated from '../Decorated';
 import invariant from 'invariant';
 import makeDecorator, {
   applyDecoratorToComponent,
   applyOptionsToDecorator,
-  Decorated,
 } from '../makeDecorator';
 import { spy } from 'sinon';
 

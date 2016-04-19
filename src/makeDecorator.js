@@ -1,18 +1,6 @@
 import { COMPOSING } from './constants';
+import Decorated from './Decorated';
 import invariant from 'invariant';
-import React from 'react';
-
-export function Decorated(decorators, DecoratedComponent, props) {
-  const transformedProps = decorators.reduce(
-    (nextProps, decorate) => decorate(nextProps),
-    props
-  );
-  return (
-    <DecoratedComponent
-      {...transformedProps}
-    />
-  );
-}
 
 export function applyComposedDecoratorsToComponent(
   decorators,
