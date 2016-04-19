@@ -1,7 +1,7 @@
 ## Composing decorators
 
-Remember way back to the begining of this guide, the [introduction](/docs/Introduction.md) mentioned that `react-decorator` decorators are composable.
-Lucky for us, we don't need to write any new code to compose decorators.
+Remember way back to the begining of this guide, the [introduction](/docs/Introduction.md) mentioned that `react-decorator` decorators are composable?
+We don't need to write any new code to compose decorators.
 All we need to do is import the `composeDecorators` helper from `react-decorate`.
 
 Let's make a new component that has two counters.
@@ -10,8 +10,14 @@ Let's make a new component that has two counters.
 import { composeDecorators } from 'react-decorate'
 
 const ClickAndHoverCounter = composeDecorators(
-  counter('clickCount', 'incClicks'),
-  counter('hoverCount', 'incHovers')
+  counterDecorator({
+    incName: 'incClicks',
+    valueName: 'clickCount',
+  }),
+  counterDecorator({
+    incName: 'incHovers',
+    valueName: 'hoverCount',
+  })
 )(({
   clickCount,
   hoverCount,

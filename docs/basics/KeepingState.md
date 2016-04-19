@@ -1,35 +1,29 @@
 # Keeping state
 
-Decorators may keep additional state.
-`react-decorate` doesn't make any prescriptions about how, it simply exposes an
-`onNext` function to the `nextProps` handler.
-When `onNext` is called the HOC will be re-rendered.
+Much like react components, decorators may keep additional state.
+The second argument of the decorator function, `state`, is its current value and the third argument, `setState`, is a function you can use to update state.
+Calling `setState` will trigger a re-render.
 
 Let's add some state to the `counter` decorator.
 
 > **Note:** some unchanged snippets are commented out like `// ...` to help us focus on the new stuff
 
 ```javascript
-const counter = makeDecorator(() => {
-  let count
+const counter = ({defaultCount, ...props}, onNext) => {
+  const currentCount = count === undefined ? defaultCount : count;
   return {
-    // ...
-    nextProps: ({defaultCount, ...props}, onNext) => ({
-      ...props,
-      count: count === undefined ? defaultCount : count,
-      incCount: () => {
-        count = count + 1
-        onNext()
-      }
-    }),
-  }
-})
+    ...props,
+    count: currentCount,
+    incCount: () => setState(currentCount + 1),
+  };
+};
+
+// ...
+
+const counterDecorator = makeDecorator(counter);
 ```
 
-Here we're simply using a variable `count` inside the decorator to hold state.
-It's worth noting that there's nothing stopping us from using a more complex pattern like a flux store, but let's keep it simple for now.
-
-There's also a new prop, `incCount`, which is a function that increments the count and calls `onNext` which re-evaluates the HOC.
+We added a new prop, `incCount`, which is a function that increments the count and calls `setState` which re-evaluates the HOC.
 
 Now a component decorated with `counter` can call `incCount` to add one to the count.
 

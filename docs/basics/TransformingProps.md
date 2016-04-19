@@ -8,21 +8,32 @@ Let's add a `defaultCount` prop to the decorator from the previous example.
 ```javascript
 import { PropTypes } from 'react'
 
-const counter = makeDecorator(() => ({
-  displayName: () => 'counter',
-  propTypes: (types) => ({
-    ...types,
-    defaultCount: PropTypes.number.isRequired,
-  }),
-  defaultProps: (defaults) => ({
-    ...defaults,
-    defaultCount: 0,
-  }),
-  nextProps: ({defaultCount, ...props}) => ({
+const counter = () => ({defaultCount, ...props}) => {
+  return {
     ...props,
     count: defaulCount,
-  }),
-}))
+  };
+};
+
+counter.displayName = () => () => {
+  return 'counter';
+};
+
+counter.propTypes = () => (propTypes) => {
+  return {
+    ...propTypes,
+    defaultCount: PropTypes.number.isRequired,
+  };
+};
+
+counter.defaultProps = () => (defaultProps) => {
+  return {
+    ...defaultProps,
+    defaultCount: 0,
+  };
+};
+
+const counterDecorator = makeDecorator(counter);
 ```
 
 In `propTypes`, decorator adds a `defaultCount` propType to ensure that the prop it's expecting is defined.
@@ -32,7 +43,7 @@ In `nextProps` it renames `defaultCount` to `count`.
 Now if we decorate a component with `counter`, that component will receive a prop named `count` with a value of `0` or whatever `defaultCount` was provided.
 
 ```javascript
-const ClickCounter = counter()(
+const ClickCounter = counterDecorator()(
   ({count}) => <button>{count} clicks!</button>
 );
 ```
