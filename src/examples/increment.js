@@ -9,7 +9,7 @@ export const increment = ({transformProp, toProp}) => props => {
 };
 
 increment.displayName = ({transformProp, toProp}) => {
-  return `increment(${transformProp}->${toProp})`;
+  return `increment(${transformProp} as ${toProp})`;
 };
 
 increment.defaultProps = ({transformProp}) => defaults => {

@@ -2,11 +2,15 @@ import { expect } from 'chai';
 import composeDecorators from '../../composeDecorators';
 import { shallow } from 'enzyme';
 import increment from '../increment';
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 function MockComponent() {
   return <div />;
 }
+
+MockComponent.propTypes = {
+  count: PropTypes.number.isRequired,
+};
 
 const DecoratedComponent = composeDecorators(
   increment({
@@ -20,6 +24,22 @@ const DecoratedComponent = composeDecorators(
 )(MockComponent);
 
 describe('EXAMPLE: stateless "increment" decorator', () => {
+  it('passes existing propTypes', () => {
+    expect(
+      DecoratedComponent.propTypes.count
+    ).to.equal(
+      MockComponent.propTypes.count
+    );
+  });
+
+  it('adds countPlus propType', () => {
+    expect(
+      DecoratedComponent.propTypes.countPlus
+    ).to.equal(
+      PropTypes.number.isRequired
+    );
+  });
+
   it('adds a new `countPlus` prop', () => {
     const root = shallow(<DecoratedComponent count={1} />);
     const {count, countPlus} = root.find(MockComponent).props();
