@@ -4,7 +4,7 @@ export function toDisplayName(decorators, BaseComponent) {
 }
 
 export function toInitialState(decorators, props, setState) {
-  return decorators.reduce((state, {initialState}, index) => {
+  const result = decorators.reduce((state, {initialState}, index) => {
     if (typeof initialState === 'function') {
       state[index] = initialState(
         props,
@@ -14,6 +14,7 @@ export function toInitialState(decorators, props, setState) {
     }
     return state;
   }, {});
+  return result;
 }
 
 export function toProps(decorators, props, state, setState) {

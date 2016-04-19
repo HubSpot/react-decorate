@@ -13,19 +13,20 @@ import { makeDecorator } from 'react-decorate';
 
 const defaultPropName = 'uniqueId';
 
-export persistentUniqueId = ({propName}) => (props, unqiueId) => {
+export const persistentUniqueId = ({propName}) => (props, uniqueId) => {
   return {
     ...props,
     [propName]: uniqueId,
   };
 };
 
-let nextId = 0
+let nextId = 0;
+
 persistentUniqueId.initialState = () => () => {
   const cache = {};
-  return function uniqueId(cache, keyStr) {
+  return function uniqueId(keyStr) {
     if (!cache.hasOwnProperty(keyStr)) {
-      cache[keyStr] = `uid-${keyStr}-${nextId++}`];
+      cache[keyStr] = `uid-${keyStr}-${nextId++}`;
     }
     return cache[keyStr];
   };
