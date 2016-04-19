@@ -1,5 +1,7 @@
-import { PropTypes } from 'react';
+import { expect } from 'chai';
+import { shallow } from 'enzyme';
 import makeDecorator from '../makeDecorator';
+import React, { PropTypes } from 'react';
 
 const increment = ({transformProp, toProp}) => props => {
   return {
@@ -28,6 +30,20 @@ increment.propTypes = ({transformProp}) => propTypes => {
 
 const incrementDecorator = makeDecorator(increment);
 
+function MockComponent() {
+  return <div />;
+}
+
+const DecoratedComponent = incrementDecorator({
+  transformProp: 'count',
+  toProp: 'countPlus',
+})(MockComponent);
+
 describe('stateless decorator', () => {
-  console.log(incrementDecorator);
+  it('adds a new `countPlus` prop', () => {
+    const root = shallow(<DecoratedComponent count={1} />);
+    const {count, countPlus} = root.find(MockComponent).props();
+    expect(count).to.equal(1);
+    expect(countPlus).to.equal(2);
+  });
 });
