@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import Decorated from '../Decorated';
 import invariant from 'invariant';
 import makeDecorator, {
   applyDecoratorToComponent,
@@ -50,20 +49,6 @@ describe('makeDecorator', () => {
         withOptions.length
       ).to.equal(
         applyDecoratorToComponent.length - 1
-      );
-    });
-  });
-
-  describe('applyDecoratorToComponent', () => {
-    it('partials Decorated', () => {
-      const decorated = applyDecoratorToComponent(
-        () => {},
-        () => {}
-      );
-      expect(
-        decorated.length
-      ).to.equal(
-        Decorated.length - 2
       );
     });
   });

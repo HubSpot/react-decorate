@@ -1,13 +1,6 @@
 import { COMPOSING } from './constants';
-import Decorated from './Decorated';
+import { makeDecorated } from './Decorated';
 import invariant from 'invariant';
-
-export function applyComposedDecoratorsToComponent(
-  decorators,
-  Component
-) {
-  return Decorated.bind(null, decorators, Component);
-}
 
 export function applyDecoratorToComponent(
   decorator,
@@ -16,7 +9,7 @@ export function applyDecoratorToComponent(
   if (Component === COMPOSING) {
     return decorator;
   }
-  return applyComposedDecoratorsToComponent([decorator], Component);
+  return makeDecorated([decorator], Component);
 }
 
 export function applyOptionsToDecorator(constructor, options = {}) {

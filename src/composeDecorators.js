@@ -1,8 +1,8 @@
 import { COMPOSING } from './constants';
-import { applyComposedDecoratorsToComponent } from './makeDecorator';
+import { makeDecorated } from './Decorated';
 
 export default function composeDecorators(...partialDecorators) {
-  return applyComposedDecoratorsToComponent.bind(
+  return makeDecorated.bind(
     null,
     partialDecorators.map((dec) => dec(COMPOSING))
   );
