@@ -1,5 +1,19 @@
-import { META_FIELDS } from './constants';
 import React, { Component } from 'react';
+
+function applyDisplayName(decorators, BaseComponent) {
+  const names = decorators.map(({displayName}) => displayName());
+  return `Decorated(${names.join(' -> ')})(${BaseComponent.displayName})`;
+}
+
+function applyMeta(fieldName, decorators, BaseComponent) {
+  return decorators.reduce(
+    (result, decorator) => {
+      const meta = decorator[fieldName];
+      return meta ? meta(result) : result;
+    },
+    BaseComponent[fieldName] || {}
+  );
+}
 
 function transformProps(decorators, props, state, setState) {
   return decorators.reduce(
@@ -38,15 +52,22 @@ export function makeDecorated(decorators, BaseComponent) {
     }
   }
 
-  META_FIELDS.forEach((fieldName) => {
-    DecoratedComponent[fieldName] = decorators.reduce(
-      (result, decorator) => {
-        const meta = decorator[fieldName];
-        return meta ? meta(result) : result;
-      },
-      BaseComponent[fieldName] || {}
-    );
-  });
+  DecoratedComponent.displayName = applyDisplayName(
+    decorators,
+    BaseComponent
+  );
+
+  DecoratedComponent.defaultProps = applyMeta(
+    'defaultProps',
+    decorators,
+    BaseComponent
+  );
+
+  DecoratedComponent.propTypes = applyMeta(
+    'propTypes',
+    decorators,
+    BaseComponent
+  );
 
   return DecoratedComponent;
 }

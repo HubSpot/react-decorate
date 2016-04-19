@@ -4,5 +4,6 @@ export const COMPOSING = typeof Symbol === 'function' ?
 
 export const META_FIELDS = [
   'defaultProps',
+  'displayName',
   'propTypes',
 ];

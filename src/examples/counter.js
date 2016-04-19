@@ -17,7 +17,7 @@ export const counter = ({propName}) => (props, state, setState) => {
   return nextProps;
 };
 
-counter.displayName = ({propName}) => {
+counter.displayName = ({propName}) => () => {
   return `counter(${propName})`;
 };
 

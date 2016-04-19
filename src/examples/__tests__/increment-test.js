@@ -12,6 +12,8 @@ MockComponent.propTypes = {
   count: PropTypes.number.isRequired,
 };
 
+MockComponent.displayName = 'MockComponent';
+
 const DecoratedComponent = composeDecorators(
   increment({
     transformProp: 'count',
@@ -24,6 +26,20 @@ const DecoratedComponent = composeDecorators(
 )(MockComponent);
 
 describe('EXAMPLE: stateless "increment" decorator', () => {
+  it('generates a proper displayName', () => {
+    expect(
+      DecoratedComponent.displayName
+    ).to.equal(
+      'Decorated(increment(count as countPlus) -> increment(countPlus as countPlusPlus))(MockComponent)'
+    );
+  });
+
+  it('generates the propert defaults', () => {
+    const {count, countPlus} = DecoratedComponent.defaultProps;
+    expect(count).to.equal(0);
+    expect(countPlus).to.equal(0);
+  });
+
   it('passes existing propTypes', () => {
     expect(
       DecoratedComponent.propTypes.count

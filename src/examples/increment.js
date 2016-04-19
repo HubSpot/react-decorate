@@ -8,7 +8,7 @@ export const increment = ({transformProp, toProp}) => props => {
   };
 };
 
-increment.displayName = ({transformProp, toProp}) => {
+increment.displayName = ({transformProp, toProp}) => () => {
   return `increment(${transformProp} as ${toProp})`;
 };
 

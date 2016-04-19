@@ -2,11 +2,13 @@ import { expect } from 'chai';
 import composeDecorators from '../../composeDecorators';
 import counter from '../counter';
 import { shallow } from 'enzyme';
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 function MockComponent() {
   return <div />;
 }
+
+MockComponent.displayName = 'MockComponent';
 
 const DecoratedComponent = composeDecorators(
   counter({propName: 'clicks'}),
@@ -14,6 +16,26 @@ const DecoratedComponent = composeDecorators(
 )(MockComponent);
 
 describe('EXAMPLE: stateful "counter" decorator', () => {
+  it('generates a proper displayName', () => {
+    expect(
+      DecoratedComponent.displayName
+    ).to.equal(
+      'Decorated(counter(clicks) -> counter(hovers))(MockComponent)'
+    );
+  });
+
+  it('generates the proper defaults', () => {
+    const {defaultClicks, defaultHovers} = DecoratedComponent.defaultProps;
+    expect(defaultClicks).to.equal(0);
+    expect(defaultHovers).to.equal(0);
+  });
+
+  it('generates the proper propTypes', () => {
+    const {defaultClicks, defaultHovers} = DecoratedComponent.propTypes;
+    expect(defaultClicks).to.equal(PropTypes.number.isRequired);
+    expect(defaultHovers).to.equal(PropTypes.number.isRequired);
+  });
+
   it('props for "clicks" are applied', () => {
     const root = shallow(<DecoratedComponent />);
     const {clicks, incClicks} = root.props();
