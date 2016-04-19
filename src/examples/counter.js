@@ -1,16 +1,20 @@
+import makeDecorator from '../makeDecorator';
 import { PropTypes } from 'react';
-import { makeDecorator } from 'react-decorate';
 
 function capitalize(str) {
   return str[0].toUpperCase() + str.slice(1);
 }
 
 export const counter = ({propName}) => (props, state, setState) => {
-  return {
+  const defaultName = `default${capitalize(propName)}`;
+  const count = state || props[defaultName];
+  const nextProps = {
     ...props,
-    [propName]: state,
-    [`inc${capitalize(propName)}`]: () => setState(state + 1),
+    [propName]: count,
+    [`inc${capitalize(propName)}`]: () => setState(count + 1),
   };
+  delete nextProps[defaultName];
+  return nextProps;
 };
 
 counter.displayName = ({propName}) => {

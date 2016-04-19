@@ -1,3 +1,4 @@
+import { META_FIELDS } from './constants';
 import React, { Component } from 'react';
 
 function transformProps(decorators, props, state, setState) {
@@ -12,9 +13,10 @@ function transformProps(decorators, props, state, setState) {
 }
 
 export function makeDecorated(decorators, BaseComponent) {
-  return class DecoratedComponent extends Component {
+  class DecoratedComponent extends Component {
     constructor(props) {
       super(props);
+      this.handleSetState = this.handleSetState.bind(this);
       this.state = {};
     }
 
@@ -34,7 +36,19 @@ export function makeDecorated(decorators, BaseComponent) {
         />
       );
     }
-  };
+  }
+
+  META_FIELDS.forEach((fieldName) => {
+    DecoratedComponent[fieldName] = decorators.reduce(
+      (result, decorator) => {
+        const meta = decorator[fieldName];
+        return meta ? meta(result) : result;
+      },
+      BaseComponent[fieldName] || {}
+    );
+  });
+
+  return DecoratedComponent;
 }
 
 export default function Decorated(

@@ -1,5 +1,5 @@
+import makeDecorator from '../makeDecorator';
 import { PropTypes } from 'react';
-import { makeDecorator } from 'react-decorate';
 
 export const increment = ({transformProp, toProp}) => props => {
   return {

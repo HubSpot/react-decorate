@@ -1,52 +1,25 @@
 import { expect } from 'chai';
-import composeDecorators from '../composeDecorators';
+import composeDecorators from '../../composeDecorators';
 import { shallow } from 'enzyme';
-import makeDecorator from '../makeDecorator';
-import React, { PropTypes } from 'react';
-
-const increment = ({transformProp, toProp}) => props => {
-  return {
-    ...props,
-    [toProp]: props[transformProp] + 1
-  };
-};
-
-increment.displayName = ({transformProp, toProp}) => {
-  return `increment(${transformProp}->${toProp})`;
-};
-
-increment.defaultProps = ({transformProp}) => defaults => {
-  return {
-    ...defaults,
-    [transformProp]: 0,
-  };
-};
-
-increment.propTypes = ({transformProp}) => propTypes => {
-  return {
-    ...propTypes,
-    [transformProp]: PropTypes.number.isRequired,
-  };
-};
-
-const incrementDecorator = makeDecorator(increment);
+import increment from '../increment';
+import React from 'react';
 
 function MockComponent() {
   return <div />;
 }
 
 const DecoratedComponent = composeDecorators(
-  incrementDecorator({
+  increment({
     transformProp: 'count',
     toProp: 'countPlus',
   }),
-  incrementDecorator({
+  increment({
     transformProp: 'countPlus',
     toProp: 'countPlusPlus',
   })
 )(MockComponent);
 
-describe('stateless decorator', () => {
+describe('EXAMPLE: stateless "increment" decorator', () => {
   it('adds a new `countPlus` prop', () => {
     const root = shallow(<DecoratedComponent count={1} />);
     const {count, countPlus} = root.find(MockComponent).props();
