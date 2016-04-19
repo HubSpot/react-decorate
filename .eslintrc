@@ -1,3 +1,6 @@
 {
-  "extends": "hubspot"
+  "extends": "hubspot",
+  "env": {
+    "mocha": true
+  }
 }
