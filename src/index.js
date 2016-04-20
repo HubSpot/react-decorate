@@ -1,7 +1,7 @@
-import composeDecorators from './compose'
-import makeDecorator from './makeDecorator'
+import composeDecorators from './composeDecorators';
+import makeDecorator from './makeDecorator';
 
-module.exports = {
+export default {
   composeDecorators,
   makeDecorator,
-}
+};

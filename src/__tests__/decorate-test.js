@@ -1,150 +1,78 @@
-import { decorateWithConfigs } from '../decorate'
-import { expect } from 'chai'
-import { shallow } from 'enzyme'
-import React from 'react'
+import { expect } from 'chai';
+import { shallow } from 'enzyme';
+import makeDecoratedComponent from '../makeDecoratedComponent';
+import React, { PropTypes } from 'react';
 
-const MockComponent = React.createClass({
-  propTypes: {
-    one: function() {},
-    unrelated: function() {},
+const mockOne = {
+  displayName() {
+    return 'one';
   },
 
-  getDefaultProps() {
-    return {
-      unrelated: 'unrelated',
-    }
-  },
-
-  render() {
-    return <div />
-  },
-})
-
-let mockState = 1
-const MockDecorator = {
-  displayName: () => 'mock',
-  propTypes: ({one, ...others}) => ({
-    ...others,
-    type: function() {},
-  }),
-  defaultProps: (defaults) => {
+  defaultProps(defaults) {
     return {
       ...defaults,
-      type: 'test',
-    }
+      defaultOne: 1,
+    };
   },
-  nextProps: (props, onNext) => ({
-    ...props,
-    one: mockState,
-    setOne: (next) => {
-      mockState = next
-      onNext()
-    },
-  }),
+
+  propTypes(types) {
+    return {
+      ...types,
+      defaultOne: PropTypes.number,
+    };
+  },
+
+  initialState({defaultOne}) {
+    return defaultOne || 1;
+  },
+
+  nextProps({defaultOne, ...props}, state) {
+    return {
+      ...props,
+      one: state || defaultOne,
+    };
+  },
+};
+
+function MockComponent() {
+  return <div />;
 }
 
-const OtherDecorator = {
-  displayName: () => 'other',
-  nextProps: () => ({
-    two: 2,
-  }),
-}
+MockComponent.displayName = 'MockComponent';
 
-describe('decorateWithConfigs', () => {
-  it('returns an object', () => {
-    expect(decorateWithConfigs([], MockComponent)).to.be.a('function')
-  })
+describe('makeDecoratedComponent', () => {
+  let DecoratedComponent;
+  beforeEach(() => {
+    DecoratedComponent = makeDecoratedComponent([mockOne], MockComponent);
+  });
 
-  it('filters decorator propTypes', () => {
-    const DecoratedComponent = decorateWithConfigs(
-      [MockDecorator],
-      MockComponent
-    )
-    expect(DecoratedComponent.propTypes.one).to.equal(undefined)
-  })
+  it('applies displayName', () => {
+    expect(DecoratedComponent.displayName).to.deep.equal('Decorated(one)(MockComponent)');
+  });
 
-  it('generates default props', () => {
-    const DecoratedComponent = decorateWithConfigs(
-      [MockDecorator],
-      MockComponent
-    )
-    const root = shallow(<DecoratedComponent />)
-    expect(root.prop('type')).to.equal('test')
-    expect(root.prop('unrelated')).to.equal('unrelated')
-  })
+  it('applies defaultProps', () => {
+    expect(DecoratedComponent.defaultProps).to.deep.equal({
+      defaultOne: 1,
+    });
+  });
 
-  it('generates propTypes', () => {
-    const DecoratedComponent = decorateWithConfigs(
-      [MockDecorator],
-      MockComponent
-    )
-    expect(DecoratedComponent.propTypes.type).to.be.a('function')
-    expect(DecoratedComponent.propTypes.unrelated).to.be.a('function')
-  })
+  it('applies propTypes', () => {
+    expect(DecoratedComponent.propTypes).to.deep.equal({
+      defaultOne: PropTypes.number,
+    });
+  });
 
-  it('runs the getInitialState cycle', () => {
-    const DecoratedComponent = decorateWithConfigs(
-      [OtherDecorator],
-      MockComponent
-    )
-    const root = shallow(<DecoratedComponent />)
-    expect(root.prop('two')).to.deep.equal(2)
-  })
+  it('applies initialState', () => {
+    const rootWithoutDefault = shallow(<DecoratedComponent />);
+    expect(rootWithoutDefault.state(0)).to.equal(1);
+    const rootWithDefault = shallow(<DecoratedComponent defaultOne={2} />);
+    expect(rootWithDefault.state(0)).to.equal(2);
+  });
 
-  it('passes props', () => {
-    const DecoratedComponent = decorateWithConfigs(
-      [MockDecorator],
-      MockComponent
-    )
-    const root = shallow(
-      <DecoratedComponent
-        one={1}
-        two={2}
-      />
-    )
-    expect(root.prop('one')).to.deep.equal(1)
-    expect(root.prop('setOne')).to.be.a('function')
-    expect(root.prop('two')).to.deep.equal(2)
-  })
-
-  it('obeys onNext', () => {
-    const DecoratedComponent = decorateWithConfigs(
-      [MockDecorator],
-      MockComponent
-    )
-    const root = shallow(
-      <DecoratedComponent
-        one={1}
-        two={2}
-      />
-    )
-    expect(root.prop('one')).to.equal(1)
-    root.prop('setOne')(2)
-    root.update()
-    expect(root.prop('one')).to.equal(2)
-  })
-
-  it('calls unmount', () => {
-    let unmounted = false
-    const DecoratedComponent = decorateWithConfigs([{
-      displayName: () => 'mock',
-      nextProps: (props) => props,
-      unmount: () => unmounted = true,
-    }], MockComponent)
-    const root = shallow(
-      <DecoratedComponent
-        one={1}
-        two={2}
-      />
-    )
-    expect(unmounted).to.equal(false)
-    root.unmount()
-    expect(unmounted).to.equal(true)
-  })
-
-  it('renders the base component', () => {
-    const DecoratedComponent = decorateWithConfigs([], MockComponent)
-    const root = shallow(<DecoratedComponent />)
-    expect(root.is(MockComponent)).to.equal(true)
-  })
-})
+  it('applies nextProps', () => {
+    const rootWithoutDefault = shallow(<DecoratedComponent />);
+    expect(rootWithoutDefault.prop('one')).to.equal(1);
+    const rootWithDefault = shallow(<DecoratedComponent defaultOne={2} />);
+    expect(rootWithDefault.prop('one')).to.equal(2);
+  });
+});

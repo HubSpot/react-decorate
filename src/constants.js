@@ -1,1 +1,3 @@
-export const IS_COMPOSING = 'IS_COMPOSING'
+export const COMPOSING = typeof Symbol === 'function' ?
+  Symbol('composing') :
+  '@@react-decorate/composing';

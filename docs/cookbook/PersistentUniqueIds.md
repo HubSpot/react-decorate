@@ -9,30 +9,46 @@ Rather than manually caching each id, we can write a decorator which memoizes ou
 
 ```javascript
 // persistentUniqueId.js
-import { makeDecorator } from 'react-decorate'
+import { makeDecorator } from 'react-decorate';
 
-const defaultPropName = 'uniqueId'
+const defaultPropName = 'uniqueId';
 
-let nextId = 0
+let nextId = 0;
 
-export default makeDecorator((propName = defaultPropName) => {
-  let cache = {}
-  function uniqueId(keyStr) {
-    if (!cache.hasOwnProperty(keyStr)) {
-      cache[keyStr] = `uid-${keyStr}-${nextId++}`]
-    }
-    return cache[keyStr]
-  }
+const persistentUniqueId = (propName = defaultPropName) => {
   return {
-    displayName: () => propName === defaultPropName ?
-      defaultPropName :
-      `${defaultPropName}(${propName})`,
-    nextProps: (props) => ({
-      ...props,
-      [propName]: uniqueId,
-    }),
-  }
-}
+    displayName() {
+      return propName === defaultPropName ?
+        defaultPropName :
+        `${defaultPropName}(${propName})`;
+    },
+
+    initialState() {
+      const cache = {};
+      return function uniqueId(keyStr) {
+        if (!cache.hasOwnProperty(keyStr)) {
+          cache[keyStr] = `uid-${keyStr}-${nextId++}`;
+        }
+        return cache[keyStr];
+      };
+    },
+
+    propTypes(propTypes) {
+      const nextPropTypes = {...propTypes};
+      delete nextPropTypes[propName];
+      return nextPropTypes;
+    },
+
+    nextProps(props, uniqueId) {
+      return {
+        ...props,
+        [propName]: uniqueId,
+      };
+    },
+  };
+};
+
+export default makeDecorator(persistentUniqueId);
 ```
 
 Now a component decorated with `persistentUniqueId` will receive a `uniqueId` function as a prop.

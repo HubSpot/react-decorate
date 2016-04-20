@@ -1,18 +1,35 @@
-import decorate from './decorate'
-import { IS_COMPOSING } from './constants'
-import invariant from 'invariant'
+import { COMPOSING } from './constants';
+import enforceDecorator from './enforceDecorator';
+import invariant from 'invariant';
+import makeDecoratedComponent from './makeDecoratedComponent';
 
-export default function makeDecorator(constructor) {
-  invariant(
-    typeof constructor === 'function',
-    'expected `constructor` to be a function but got `%s`',
-    constructor
-  )
-  return (...options) => BaseComponent => {
-    const config = constructor(...options)
-    if (BaseComponent === IS_COMPOSING) {
-      return config
-    }
-    return decorate(config)(BaseComponent)
+export function applyDecoratorToComponent(
+  decorator,
+  Component = COMPOSING
+) {
+  if (Component === COMPOSING) {
+    return decorator;
   }
+  return makeDecoratedComponent([decorator], Component);
+}
+
+export function applyOptionsToDecorator(constructor, ...options) {
+  return applyDecoratorToComponent.bind(
+    null,
+    enforceDecorator(constructor(...options))
+  );
+}
+
+export default function makeDecorator(
+  constructDecorator
+) {
+  invariant(
+    typeof constructDecorator === 'function',
+    'expected `constructDecorator` to be a function but got `%s`',
+    constructDecorator
+  );
+  return applyOptionsToDecorator.bind(
+    null,
+    constructDecorator
+  );
 }
