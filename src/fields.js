@@ -43,9 +43,9 @@ export const toDefaultProps = applyMeta.bind(null, 'defaultProps');
 export const toPropTypes = applyMeta.bind(null, 'propTypes');
 
 export function toUnmount(decorators, props, state) {
-  decorators.forEach(({unmount}) => {
+  decorators.forEach(({unmount}, index) => {
     if (typeof unmount === 'function') {
-      unmount(props, state);
+      unmount(props, state[index]);
     }
   });
 }
