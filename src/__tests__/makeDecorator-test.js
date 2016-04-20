@@ -1,7 +1,5 @@
 import { expect } from 'chai';
-import invariant from 'invariant';
 import makeDecorator, {
-  applyDecoratorToComponent,
   applyOptionsToDecorator,
 } from '../makeDecorator';
 import { stub } from 'sinon';
@@ -21,11 +19,6 @@ const mockDecorator = {
 };
 
 const mockConstructor = () => {
-  invariant(
-    typeof propName === 'string',
-    'expected `propName` to be a `%s`',
-    propName
-  );
   return mockDecorator;
 };
 
