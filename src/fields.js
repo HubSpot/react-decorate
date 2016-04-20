@@ -19,8 +19,8 @@ export function toInitialState(decorators, props, setState) {
 
 export function toProps(decorators, props, state, setState) {
   return decorators.reduce(
-    (nextProps, decorate, index) => decorate(
-      nextProps,
+    (coll, {nextProps}, index) => nextProps(
+      coll,
       state[index],
       setState.bind(null, index)
     ),

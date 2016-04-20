@@ -1,28 +1,32 @@
 import makeDecorator from '../makeDecorator';
 import { PropTypes } from 'react';
 
-export const increment = ({transformProp, toProp}) => props => {
+export const increment = (transformProp, toProp) => {
   return {
-    ...props,
-    [toProp]: props[transformProp] + 1
-  };
-};
+    displayName() {
+      return `increment(${transformProp} as ${toProp})`;
+    },
 
-increment.displayName = ({transformProp, toProp}) => () => {
-  return `increment(${transformProp} as ${toProp})`;
-};
+    defaultProps(defaults) {
+      return {
+        ...defaults,
+        [transformProp]: 0,
+      };
+    },
 
-increment.defaultProps = ({transformProp}) => defaults => {
-  return {
-    ...defaults,
-    [transformProp]: 0,
-  };
-};
+    propTypes(propTypes) {
+      return {
+        ...propTypes,
+        [transformProp]: PropTypes.number.isRequired,
+      };
+    },
 
-increment.propTypes = ({transformProp}) => propTypes => {
-  return {
-    ...propTypes,
-    [transformProp]: PropTypes.number.isRequired,
+    nextProps(props) {
+      return {
+        ...props,
+        [toProp]: props[transformProp] + 1
+      };
+    },
   };
 };
 

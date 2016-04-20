@@ -1,5 +1,6 @@
-import { COMPOSING, META_FIELDS } from './constants';
+import { COMPOSING } from './constants';
 import { makeDecorated } from './Decorated';
+import enforceDecorator from './enforceDecorator';
 import invariant from 'invariant';
 
 export function applyDecoratorToComponent(
@@ -12,14 +13,11 @@ export function applyDecoratorToComponent(
   return makeDecorated([decorator], Component);
 }
 
-export function applyOptionsToDecorator(constructor, options = {}) {
-  const decorator = constructor(options);
-  META_FIELDS.forEach((field) => {
-    if (typeof constructor[field] === 'function') {
-      decorator[field] = constructor[field](options);
-    }
-  });
-  return applyDecoratorToComponent.bind(null, decorator);
+export function applyOptionsToDecorator(constructor, ...options) {
+  return applyDecoratorToComponent.bind(
+    null,
+    enforceDecorator(constructor(...options))
+  );
 }
 
 export default function makeDecorator(

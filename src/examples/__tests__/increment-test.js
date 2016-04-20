@@ -15,14 +15,8 @@ MockComponent.propTypes = {
 MockComponent.displayName = 'MockComponent';
 
 const DecoratedComponent = composeDecorators(
-  increment({
-    transformProp: 'count',
-    toProp: 'countPlus',
-  }),
-  increment({
-    transformProp: 'countPlus',
-    toProp: 'countPlusPlus',
-  })
+  increment('count', 'countPlus'),
+  increment('countPlus', 'countPlusPlus')
 )(MockComponent);
 
 describe('EXAMPLE: stateless "increment" decorator', () => {

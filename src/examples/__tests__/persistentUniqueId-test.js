@@ -13,9 +13,7 @@ MockComponent.propTypes = {
   uniq: PropTypes.func.isRequired,
 };
 
-const DecoratedComponent = persistentUniqueId({
-  propName: 'uniq',
-})(MockComponent);
+const DecoratedComponent = persistentUniqueId('uniq')(MockComponent);
 
 describe('EXAMPLE: "persistentUniqueId" decorator', () => {
   it('generates a proper displayName', () => {

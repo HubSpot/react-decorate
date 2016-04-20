@@ -11,8 +11,8 @@ function MockComponent() {
 MockComponent.displayName = 'MockComponent';
 
 const DecoratedComponent = composeDecorators(
-  counter({propName: 'clicks'}),
-  counter({propName: 'hovers'})
+  counter('clicks'),
+  counter('hovers')
 )(MockComponent);
 
 describe('EXAMPLE: stateful "counter" decorator', () => {

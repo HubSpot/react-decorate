@@ -4,52 +4,50 @@ import makeDecorator, {
   applyDecoratorToComponent,
   applyOptionsToDecorator,
 } from '../makeDecorator';
-import { spy } from 'sinon';
-
-const mockOptions = {
-  propName: 'test',
-};
+import { stub } from 'sinon';
 
 const mockValue = 'testing';
+const mockDecorator = {
+  displayName() {
+    return 'mockDecorator';
+  },
 
-const mockDecorator = ({propName}) => (props) => {
+  nextProps(props) {
+    return {
+      ...props,
+      testing: mockValue,
+    };
+  },
+};
+
+const mockConstructor = () => {
   invariant(
     typeof propName === 'string',
     'expected `propName` to be a `%s`',
     propName
   );
-  return {
-    ...props,
-    [propName]: mockValue,
-  };
+  return mockDecorator;
 };
 
 describe('makeDecorator', () => {
   it('throws for a nonfunction', () => {
     expect(() => makeDecorator()).to.throw();
     expect(() => makeDecorator({})).to.throw();
-    expect(() => makeDecorator(mockDecorator)).not.to.throw();
+    expect(() => makeDecorator(mockConstructor)).not.to.throw();
   });
 
   it('returns a function', () => {
-    expect(makeDecorator(mockDecorator)).to.be.a('function');
+    expect(makeDecorator(mockConstructor)).to.be.a('function');
   });
 
   describe('applyOptionsToDecorator', () => {
     it('passes options to the decorator constructor', () => {
-      const constructor = spy();
-      applyOptionsToDecorator(constructor, mockOptions);
+      const constructor = stub().returns(mockDecorator);
+      const mockOptions = {};
+      const otherMockOptions = 6;
+      applyOptionsToDecorator(constructor, mockOptions, otherMockOptions);
       expect(constructor.called).to.equal(true);
-      expect(constructor.calledWith(mockOptions)).to.equal(true);
-    });
-
-    it('partials applyDecoratorToComponent', () => {
-      const withOptions = applyOptionsToDecorator(() => {}, mockOptions);
-      expect(
-        withOptions.length
-      ).to.equal(
-        applyDecoratorToComponent.length - 1
-      );
+      expect(constructor.calledWith(mockOptions, otherMockOptions)).to.equal(true);
     });
   });
 });
