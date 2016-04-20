@@ -8,31 +8,34 @@ Let's add a `defaultCount` prop to the decorator from the previous example.
 ```javascript
 import { PropTypes } from 'react'
 
-const counter = () => ({defaultCount, ...props}) => {
+const counter = () => {
   return {
-    ...props,
-    count: defaulCount,
+    displayName() {
+      return 'counter';
+    },
+
+    propTypes(propTypes) {
+      return {
+        ...propTypes,
+        defaultCount: PropTypes.number.isRequired,
+      };
+    },
+
+    defaultProps(defaultProps) {
+      return {
+        ...defaultProps,
+        defaultCount: 0,
+      };
+    },
+
+    nextProps({defaultCount, ...props}) {
+      return {
+        ...props,
+        count: defaulCount,
+      };
+    },
   };
 };
-
-counter.displayName = () => () => {
-  return 'counter';
-};
-
-counter.propTypes = () => (propTypes) => {
-  return {
-    ...propTypes,
-    defaultCount: PropTypes.number.isRequired,
-  };
-};
-
-counter.defaultProps = () => (defaultProps) => {
-  return {
-    ...defaultProps,
-    defaultCount: 0,
-  };
-};
-
 const counterDecorator = makeDecorator(counter);
 ```
 

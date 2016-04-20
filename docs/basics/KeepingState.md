@@ -6,19 +6,23 @@ Calling `setState` will trigger a re-render.
 
 Let's add some state to the `counter` decorator.
 
-> **Note:** some unchanged snippets are commented out like `// ...` to help us focus on the new stuff
+> **Note:** unchanged snippets from the previous example are abreviated with `// ...`
 
 ```javascript
-const counter = ({defaultCount, ...props}, onNext) => {
-  const currentCount = count === undefined ? defaultCount : count;
+const counter = () => {
   return {
-    ...props,
-    count: currentCount,
-    incCount: () => setState(currentCount + 1),
+    // ...
+
+    nextProps({defaultCount, ...props}, state, setState) {
+      const currentCount = state === undefined ? defaultCount : state;
+      return {
+        ...props,
+        count: currentCount,
+        incCount: () => setState(currentCount + 1),
+      };
+    },
   };
 };
-
-// ...
 
 const counterDecorator = makeDecorator(counter);
 ```

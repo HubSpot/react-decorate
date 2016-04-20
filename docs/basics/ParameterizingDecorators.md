@@ -6,33 +6,37 @@ What if we need to change the name of the props it generates?
 Luckily decorators can accept an options object!
 
 ```javascript
-const counter = ({incName, valueName}) => (props, state, setState) => {
-  const defaultValueName = `default${capitalize(valueName)}`
-  const currentCount = count === undefined ? props[defaultValueName] : count;
+const counter = (valueName, incName) => {
   return {
-    ...props,
-    [valueName]: currentCount,
-    [incName]: () => setState(currentCount + 1),
-  }
-};
+    displayName() {
+      return `counter(${valueName},${incName})`;
+    },
 
-counter.displayName = ({incName, valueName}) => () => {
-  return `counter(${valueName},${incName})`;
-};
+    propTypes(propTypes) {
+      const defaultValueName = `default${capitalize(valueName)}`
+      return {
+        ...propTypes,
+        [defaultValueName]: PropTypes.number.isRequired,
+      };
+    },
 
-counter.propTypes = ({valueName}) => (propTypes) => {
-  const defaultValueName = `default${capitalize(valueName)}`
-  return {
-    ...propTypes,
-    [defaultValueName]: PropTypes.number.isRequired,
-  };
-};
+    defaultProps(defaultProps) {
+      const defaultValueName = `default${capitalize(valueName)}`
+      return {
+        ...defaultProps,
+        [defaultValueName]: 0,
+      };
+    },
 
-counter.defaultProps = ({valueName}) => (defaultProps) => {
-  const defaultValueName = `default${capitalize(valueName)}`
-  return {
-    ...defaultProps,
-    [defaultValueName]: 0,
+    nextProps(props, state, setState) {
+      const defaultValueName = `default${capitalize(valueName)}`
+      const currentCount = count === undefined ? props[defaultValueName] : count;
+      return {
+        ...props,
+        [valueName]: currentCount,
+        [incName]: () => setState(currentCount + 1),
+      }
+    },
   };
 };
 
@@ -43,8 +47,8 @@ By paramterizing we allow the user to specify any prop names that might be neces
 
 ```javascript
 const ClickCounter = counter(
-  incName: 'addOneClick',
-  valueName: 'clicks',
+  'clicks',
+  'addOneClick'
 )(({clicks, addOneClick}) => (
   <button onClick={addOneClick}>
     {clicks} clicks!

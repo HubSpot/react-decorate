@@ -10,14 +10,8 @@ Let's make a new component that has two counters.
 import { composeDecorators } from 'react-decorate'
 
 const ClickAndHoverCounter = composeDecorators(
-  counterDecorator({
-    incName: 'incClicks',
-    valueName: 'clickCount',
-  }),
-  counterDecorator({
-    incName: 'incHovers',
-    valueName: 'hoverCount',
-  })
+  counterDecorator('clickCount', 'incClicks'),
+  counterDecorator('hoverCount', 'incHovers')
 )(({
   clickCount,
   hoverCount,
