@@ -8,7 +8,7 @@ import {
 } from './fields';
 import React, { Component } from 'react';
 
-export function makeDecoratedComponent(decorators, BaseComponent) {
+export default function makeDecoratedComponent(decorators, BaseComponent) {
   class DecoratedComponent extends Component {
     constructor(props) {
       super(props);

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { makeDecoratedComponent } from '../decorate';
 import { shallow } from 'enzyme';
+import makeDecoratedComponent from '../makeDecoratedComponent';
 import React, { PropTypes } from 'react';
 
 const mockOne = {

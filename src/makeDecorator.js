@@ -1,7 +1,7 @@
 import { COMPOSING } from './constants';
-import { makeDecoratedComponent } from './decorate';
 import enforceDecorator from './enforceDecorator';
 import invariant from 'invariant';
+import makeDecoratedComponent from './makeDecoratedComponent';
 
 export function applyDecoratorToComponent(
   decorator,

@@ -1,5 +1,5 @@
 import { COMPOSING } from './constants';
-import { makeDecoratedComponent } from './decorate';
+import makeDecoratedComponent from './makeDecoratedComponent';
 
 function applyCompose(decorator) {
   return decorator(COMPOSING);
