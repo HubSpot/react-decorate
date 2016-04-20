@@ -1,5 +1,5 @@
 import { COMPOSING } from './constants';
-import { makeDecorated } from './Decorated';
+import { makeDecoratedComponent } from './decorate';
 import enforceDecorator from './enforceDecorator';
 import invariant from 'invariant';
 
@@ -10,7 +10,7 @@ export function applyDecoratorToComponent(
   if (Component === COMPOSING) {
     return decorator;
   }
-  return makeDecorated([decorator], Component);
+  return makeDecoratedComponent([decorator], Component);
 }
 
 export function applyOptionsToDecorator(constructor, ...options) {

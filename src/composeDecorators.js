@@ -1,9 +1,13 @@
 import { COMPOSING } from './constants';
-import { makeDecorated } from './Decorated';
+import { makeDecoratedComponent } from './decorate';
+
+function applyCompose(decorator) {
+  return decorator(COMPOSING);
+}
 
 export default function composeDecorators(...partialDecorators) {
-  return makeDecorated.bind(
+  return makeDecoratedComponent.bind(
     null,
-    partialDecorators.map((dec) => dec(COMPOSING))
+    partialDecorators.map(applyCompose)
   );
 }
