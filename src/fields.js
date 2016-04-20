@@ -38,7 +38,27 @@ function applyMeta(fieldName, decorators, BaseComponent) {
   );
 }
 
-export const toDefaultProps = applyMeta.bind(null, 'defaultProps');
+function getOriginalDefaults({defaultProps, getDefaultProps}) {
+  if (defaultProps && typeof defaultProps === 'object') {
+    return defaultProps;
+  }
+  if (typeof getDefaultProps === 'function') {
+    return getDefaultProps();
+  }
+  return {};
+}
+
+export function toDefaultProps(decorators, BaseComponent) {
+  return decorators.reduce(
+    (prev, {defaultProps}) => {
+      if (typeof defaultProps === 'function') {
+        return defaultProps(prev);
+      }
+      return prev;
+    },
+    getOriginalDefaults(BaseComponent)
+  );
+}
 
 export const toPropTypes = applyMeta.bind(null, 'propTypes');
 

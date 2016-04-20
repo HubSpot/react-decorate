@@ -21,12 +21,23 @@ describe('fields', () => {
     );
   });
 
-  it('toDefaultProps', () => {
-    const Base = {defaultProps: {one: 1}};
-    const first = {defaultProps: stub().returnsArg(0)};
-    const second = {defaultProps: types => ({...types, two: 2})};
-    expect(toDefaultProps([first, second], Base)).to.deep.equal({one: 1, two: 2});
-    expect(first.defaultProps.calledWith(Base.defaultProps)).to.equal(true);
+  describe('toDefaultProps', () => {
+    it('retrieves static defaultProps', () => {
+      const Base = {defaultProps: {one: 1}};
+      const first = {defaultProps: stub().returnsArg(0)};
+      const second = {defaultProps: types => ({...types, two: 2})};
+      expect(toDefaultProps([first, second], Base)).to.deep.equal({one: 1, two: 2});
+      expect(first.defaultProps.calledWith(Base.defaultProps)).to.equal(true);
+    });
+
+    it('retrieves createClass-style getDefaultProps', () => {
+      const mockDefaults = {one: 1};
+      const Base = {getDefaultProps: () => mockDefaults};
+      const first = {defaultProps: stub().returnsArg(0)};
+      const second = {defaultProps: types => ({...types, two: 2})};
+      expect(toDefaultProps([first, second], Base)).to.deep.equal({one: 1, two: 2});
+      expect(first.defaultProps.calledWith(mockDefaults)).to.equal(true);
+    });
   });
 
   it('toPropTypes', () => {
