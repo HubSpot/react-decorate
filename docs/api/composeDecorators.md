@@ -4,7 +4,7 @@ Combines `n` decorators into a single decorator which can be applied with 1 comp
 
 #### Arguments
 
-1. `...decorators` *(arguments)*: any number of configured decorators.
+`...decorators` *(arguments)*: any number of configured decorators.
 
 #### Returns
 
