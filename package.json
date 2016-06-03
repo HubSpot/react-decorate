@@ -1,8 +1,8 @@
 {
   "name": "react-decorate",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Build composable, stateful decorators for React.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "bugs": {
     "url": "https://github.com/HubSpot/react-decorate/issues"
   },
