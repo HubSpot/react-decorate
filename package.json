@@ -36,6 +36,9 @@
   "peerDependencies": {
     "react": "^0.14.0"
   },
+  "dependencies": {
+    "invariant": "^2.2.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-eslint": "^6.0.2",
@@ -50,7 +53,6 @@
     "eslint-config-hubspot": "^6.2.0",
     "eslint-plugin-react": "^4.3.0",
     "gitbook-cli": "^2.1.2",
-    "invariant": "^2.2.0",
     "lodash.partial": "^4.1.3",
     "mocha": "^2.5.3",
     "react": "^0.14.0",
