@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import {
+  toContextTypes,
   toDisplayName,
   toDefaultProps,
   toInitialState,
@@ -40,6 +41,16 @@ describe('fields', () => {
     });
   });
 
+  it('toContextTypes', () => {
+    const huh = () => {};
+    const what = () => {};
+    const Base = {contextTypes: {what}};
+    const first = {contextTypes: stub().returnsArg(0)};
+    const second = {contextTypes: types => ({...types, huh})};
+    expect(toContextTypes([first, second], Base)).to.deep.equal({huh, what});
+    expect(first.contextTypes.calledWith(Base.contextTypes)).to.equal(true);
+  });
+
   it('toPropTypes', () => {
     const huh = () => {};
     const what = () => {};
@@ -53,27 +64,33 @@ describe('fields', () => {
   it('toInitialState', () => {
     const props = {test: 2};
     const setState = () => {};
+    const context = {testContext: 'testing'};
     const first = {initialState: stub().returns(1)};
     const second = {initialState: ({test}) => test};
-    expect(toInitialState([first, second], props, setState)).to.deep.equal({
+    expect(toInitialState([first, second], props, setState, context)).to.deep.equal({
       0: 1,
       1: props.test,
     });
-    expect(first.initialState.calledWith(props, setState)).to.equal(true);
+    expect(first.initialState.lastCall.args[0]).to.equal(props);
+    expect(first.initialState.lastCall.args[1]).to.be.a('function');
+    expect(first.initialState.lastCall.args[2]).to.equal(context);
   });
 
   it('toProps', () => {
     const props = {test: 'testing'};
     const state = {0: 1, 1: 2};
     const setState = stub();
+    const context = {testContext: 'context'};
     const first = {nextProps: stub().callsArg(2).returnsArg(0)};
     const second = {nextProps: (prev) => ({...prev, omg: 'wow'})};
-    expect(toProps([first, second], props, state, setState)).to.deep.equal({
+    expect(toProps([first, second], props, state, setState, context)).to.deep.equal({
       ...props,
       omg: 'wow',
     });
     expect(first.nextProps.calledWith(props, 1)).to.equal(true);
     expect(setState.calledWith(0)).to.equal(true);
+    expect(first.nextProps.lastCall.args[2]).to.be.a('function');
+    expect(first.nextProps.lastCall.args[3]).to.equal(context);
   });
 
   it('toUnmount', () => {
@@ -81,8 +98,9 @@ describe('fields', () => {
     const state = {0: 1};
     const first = {unmount: spy()};
     const second = {unmount: spy()};
-    toUnmount([first, second], props, state);
-    expect(first.unmount.calledWith(props, 1)).to.equal(true);
-    expect(second.unmount.calledWith(props, undefined)).to.equal(true);
+    const context = {testContext: 'testing'};
+    toUnmount([first, second], props, state, context);
+    expect(first.unmount.calledWith(props, 1, context)).to.equal(true);
+    expect(second.unmount.calledWith(props, undefined, context)).to.equal(true);
   });
 });
