@@ -3,13 +3,13 @@ export function toDisplayName(decorators, BaseComponent) {
   return `Decorated(${names.join(' -> ')})(${BaseComponent.displayName})`;
 }
 
-export function toInitialState(decorators, props, setState) {
+export function toInitialState(decorators, props, setState, context) {
   const result = decorators.reduce((state, {initialState}, index) => {
     if (typeof initialState === 'function') {
       state[index] = initialState(
         props,
-        setState,
-        setState.bind(null, index)
+        setState.bind(null, index),
+        context
       );
     }
     return state;
@@ -17,12 +17,13 @@ export function toInitialState(decorators, props, setState) {
   return result;
 }
 
-export function toProps(decorators, props, state, setState) {
+export function toProps(decorators, props, state, setState, context) {
   return decorators.reduce(
     (coll, {nextProps}, index) => nextProps(
       coll,
       state[index],
-      setState.bind(null, index)
+      setState.bind(null, index),
+      context
     ),
     props
   );
@@ -32,9 +33,9 @@ function applyMeta(fieldName, decorators, BaseComponent) {
   return decorators.reduce(
     (result, decorator) => {
       const meta = decorator[fieldName];
-      return meta ? meta(result) : result;
+      return meta ? meta(result || {}) : result;
     },
-    BaseComponent[fieldName] || {}
+    BaseComponent[fieldName]
   );
 }
 
@@ -60,12 +61,14 @@ export function toDefaultProps(decorators, BaseComponent) {
   );
 }
 
+export const toContextTypes = applyMeta.bind(null, 'contextTypes');
+
 export const toPropTypes = applyMeta.bind(null, 'propTypes');
 
-export function toUnmount(decorators, props, state) {
+export function toUnmount(decorators, props, state, context) {
   decorators.forEach(({unmount}, index) => {
     if (typeof unmount === 'function') {
-      unmount(props, state[index]);
+      unmount(props, state[index], context);
     }
   });
 }
