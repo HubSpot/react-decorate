@@ -37,7 +37,9 @@ describe('EXAMPLE: exposeContext', () => {
 
   it('passes the context field as a prop', () => {
     const root = shallow(<DecoratedComponent />, {
-      context: {[MOCK_CONTEXT_FIELD]: MOCK_CONTEXT_VALUE}
+      context: {
+        [MOCK_CONTEXT_FIELD]: MOCK_CONTEXT_VALUE,
+      },
     });
     expect(
       root.prop(MOCK_CONTEXT_FIELD)
