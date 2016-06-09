@@ -1,0 +1,6 @@
+{
+  "extends": "hubspot",
+  "env": {
+    "mocha": true
+  }
+}
