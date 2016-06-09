@@ -1,4 +1,5 @@
 import {
+  toContextTypes,
   toDisplayName,
   toDefaultProps,
   toInitialState,
@@ -16,12 +17,13 @@ export default function makeDecoratedComponent(decorators, BaseComponent) {
       this.state = toInitialState(
         decorators,
         props,
-        this.handleSetState
+        this.handleSetState,
+        this.context
       );
     }
 
     componentWillUnmount() {
-      toUnmount(decorators, this.props, this.state);
+      toUnmount(decorators, this.props, this.state, this.context);
     }
 
     handleSetState(fieldName, value) {
@@ -35,12 +37,18 @@ export default function makeDecoratedComponent(decorators, BaseComponent) {
             decorators,
             this.props,
             this.state,
-            this.handleSetState
+            this.handleSetState,
+            this.context
           )}
         />
       );
     }
   }
+
+  DecoratedComponent.contextTypes = toContextTypes(
+    decorators,
+    BaseComponent
+  );
 
   DecoratedComponent.displayName = toDisplayName(
     decorators,

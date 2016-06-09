@@ -1,8 +1,8 @@
 {
   "name": "react-decorate",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "description": "Build composable, stateful decorators for React.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "bugs": {
     "url": "https://github.com/HubSpot/react-decorate/issues"
   },
@@ -26,10 +26,18 @@
     "docs:watch": "npm run docs:prepare && gitbook serve",
     "docs:publish": "npm run docs:clean && npm run docs:build && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:HubSpot/react-decorate gh-pages --force"
   },
+  "files": [
+    "dist",
+    "docs",
+    "lib"
+  ],
   "author": "Colby Rabideau<crabideau@hubspot.com>",
   "license": "MIT",
   "peerDependencies": {
     "react": "^0.14.0"
+  },
+  "dependencies": {
+    "invariant": "^2.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
@@ -38,16 +46,15 @@
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
-    "babel-register": "^6.5.2",
+    "babel-register": "^6.9.0",
     "chai": "^3.5.0",
     "enzyme": "^2.1.0",
     "eslint": "^2.8.0",
     "eslint-config-hubspot": "^6.2.0",
     "eslint-plugin-react": "^4.3.0",
     "gitbook-cli": "^2.1.2",
-    "invariant": "^2.2.0",
     "lodash.partial": "^4.1.3",
-    "mocha": "^2.4.5",
+    "mocha": "^2.5.3",
     "react": "^0.14.0",
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
